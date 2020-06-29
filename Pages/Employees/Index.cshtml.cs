@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AWO_Orders.Data;
 using AWO_Orders.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AWO_Orders.Pages.Employees
 {
@@ -24,7 +25,7 @@ namespace AWO_Orders.Pages.Employees
         public async Task OnGetAsync()
         {
             EmployeeModel = await _context.Employees.ToListAsync();
-            
+            EmployeeModel = EmployeeModel.Select(a => a.Employee = EmployeeModel.SingleOrDefault(b => b.Id == a.ChangedBy)).ToList();
         }
     }
 }

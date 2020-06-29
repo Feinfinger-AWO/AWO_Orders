@@ -43,5 +43,6 @@ namespace AWO_Orders.Data
         public DbSet<AWO_Orders.Models.EmployeeModel> Employees { get; set; }
         public DbSet<RightModel> Rights { get; set; }
         public DbSet<LocationModel> Locations { get; set; }
+
     }
 }
