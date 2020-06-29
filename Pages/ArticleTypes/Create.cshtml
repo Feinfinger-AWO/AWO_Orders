@@ -1,0 +1,49 @@
+﻿@page
+@model AWO_Orders.Pages.ArticleTypes.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ArticleTypeModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ArticleTypeModel.Ident" class="control-label"></label>
+                <input asp-for="ArticleTypeModel.Ident" class="form-control" />
+                <span asp-validation-for="ArticleTypeModel.Ident" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleTypeModel.Note" class="control-label"></label>
+                <input asp-for="ArticleTypeModel.Note" class="form-control" />
+                <span asp-validation-for="ArticleTypeModel.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleTypeModel.Changed" class="control-label"></label>
+                <input asp-for="ArticleTypeModel.Changed" class="form-control" />
+                <span asp-validation-for="ArticleTypeModel.Changed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArticleTypeModel.ChangedBy" class="control-label"></label>
+                <input asp-for="ArticleTypeModel.ChangedBy" class="form-control" />
+                <span asp-validation-for="ArticleTypeModel.ChangedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

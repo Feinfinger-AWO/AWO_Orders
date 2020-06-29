@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "LocationContext"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "EmployeeContext"
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "RightContext"
+    },
+    "mssql4": {
+      "type": "mssql",
+      "connectionId": "ArticleTypeContext"
+    }
+  }
+}

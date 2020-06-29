@@ -1,0 +1,66 @@
+﻿@page
+@model AWO_Orders.Pages.Rights.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RightModel[0].Ident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightModel[0].CanView)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightModel[0].CanOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightModel[0].CanProcess)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightModel[0].Changed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RightModel[0].ChangedBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.RightModel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ident)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanView)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanProcess)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Changed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChangedBy)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

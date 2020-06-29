@@ -1,0 +1,55 @@
+﻿@page
+@model AWO_Orders.Location.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>LocationModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationModel.Ident)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationModel.Ident)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationModel.Street)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationModel.Street)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationModel.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationModel.City)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationModel.PLZ)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationModel.PLZ)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationModel.Changed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationModel.Changed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationModel.ChangedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationModel.ChangedBy)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.LocationModel.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
