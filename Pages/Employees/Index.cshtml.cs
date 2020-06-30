@@ -15,17 +15,30 @@ namespace AWO_Orders.Pages.Employees
     {
         private readonly AWO_Orders.Data.EmployeeContext _context;
 
+        /// <summary>
+        /// Setzt den aktuellen Datencontext
+        /// </summary>
+        /// <param name="context"></param>
         public IndexModel(AWO_Orders.Data.EmployeeContext context)
         {
             _context = context;
         }
 
-        public IList<EmployeeModel> EmployeeModel { get;set; }
-
+        /// <summary>
+        /// Mitarbeiter liste mit Fremdschlüsseln werden gefüllt
+        /// </summary>
+        /// <returns></returns>
         public async Task OnGetAsync()
         {
             EmployeeModel = await _context.Employees.ToListAsync();
-            EmployeeModel = EmployeeModel.Select(a => a.Employee = EmployeeModel.SingleOrDefault(b => b.Id == a.ChangedBy)).ToList();
+            EmployeeModel = EmployeeModel.Select(a =>{ a.Employee = EmployeeModel.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
+            EmployeeModel = EmployeeModel.Select(a => { a.Location = _context.Locations.Find(new object[] { a.LocationId });return a; }).ToList();
+            EmployeeModel = EmployeeModel.Select(a => { a.Right = _context.Rights.Find(new object[] {  a.RightId }); return a; }).ToList();
         }
+
+        /// <summary>
+        /// Gets or sets the list of Employees
+        /// </summary>
+        public IList<EmployeeModel> EmployeeModel { get; set; }
     }
 }

@@ -31,7 +31,6 @@ namespace AWO_Orders.Models
 
         [DisplayName("Von")]
         public int ChangedBy { get; set; }
-        public EmployeeModel Employee { get; set; }
 
 
 

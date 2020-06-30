@@ -15,6 +15,10 @@ namespace AWO_Orders.Pages
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
+
+            //todo: login
+            LoginItem.EmployeeId = 1;
+            LoginItem.LoggedIn = DateTime.Now;
         }
 
         public void OnGet()
