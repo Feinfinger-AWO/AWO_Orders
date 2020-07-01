@@ -61,6 +61,9 @@ namespace AWO_Orders.Models
         [DisplayName("Passwort")]
         public string PasswordHash { get; set; }
 
+        /// <summary>
+        /// Erstellt Hashwert aus dem Passwort
+        /// </summary>
         [NotMapped]
         public string Password 
         { 
