@@ -1,11 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Security.Cryptography;
+using System.Security.Policy;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AWO_Orders.Models
@@ -15,6 +23,8 @@ namespace AWO_Orders.Models
     /// </summary>
     public class EmployeeModel
     {
+        private string password;
+
         public int Id { get; set; }
 
         [DisplayName("Name")]
@@ -48,7 +58,27 @@ namespace AWO_Orders.Models
         public virtual int LocationId { get; set; }
         public LocationModel Location { get; set; }
 
+        [DisplayName("Passwort")]
         public string PasswordHash { get; set; }
+
+        [NotMapped]
+        public string Password 
+        { 
+            get 
+            { 
+                return password; 
+            } 
+            set 
+            { 
+                password = value;
+
+                if (!string.IsNullOrWhiteSpace(password))
+                {
+                    byte[] salt = new byte[128 / 8];
+                    PasswordHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA1,10000, 256 / 8));
+                }
+            } 
+        }
 
         [DisplayName("Geändert")]
         public DateTime Changed { get; set; }

@@ -13,7 +13,9 @@ namespace AWO_Orders.Pages.Employees
 {
     public class IndexModel : PageModel
     {
+        private string filterText;
         private readonly AWO_Orders.Data.EmployeeContext _context;
+        private IList<EmployeeModel> models;
 
         /// <summary>
         /// Setzt den aktuellen Datencontext
@@ -30,15 +32,37 @@ namespace AWO_Orders.Pages.Employees
         /// <returns></returns>
         public async Task OnGetAsync()
         {
-            EmployeeModel = await _context.Employees.ToListAsync();
-            EmployeeModel = EmployeeModel.Select(a =>{ a.Employee = EmployeeModel.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
-            EmployeeModel = EmployeeModel.Select(a => { a.Location = _context.Locations.Find(new object[] { a.LocationId });return a; }).ToList();
-            EmployeeModel = EmployeeModel.Select(a => { a.Right = _context.Rights.Find(new object[] {  a.RightId }); return a; }).ToList();
+            models = await _context.Employees.ToListAsync();
+            models = models.Select(a => { a.Employee = models.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
+            models = models.Select(a => { a.Location = _context.Locations.Find(new object[] { a.LocationId });return a; }).ToList();
+            models = models.Select(a => { a.Right = _context.Rights.Find(new object[] {  a.RightId }); return a; }).ToList();
+            EmployeeModel = models;
         }
 
         /// <summary>
         /// Gets or sets the list of Employees
         /// </summary>
         public IList<EmployeeModel> EmployeeModel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text to filter by surename and forename
+        /// </summary>
+        public string FilterText
+        {
+            get{ return filterText; }
+            set 
+            {
+                filterText = value;
+                if (!String.IsNullOrWhiteSpace(value))
+                {
+                    EmployeeModel = models.Where(a => a.Forename.ToLower().Contains(value.ToLower()) ||
+                                        a.SureName.ToLower().Contains(value.ToLower())).ToList();
+                }
+                else
+                {
+                    EmployeeModel = models;
+                }
+            } 
+        }
     }
 }
