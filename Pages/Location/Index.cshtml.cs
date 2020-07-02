@@ -24,6 +24,8 @@ namespace AWO_Orders.Location
         public async Task OnGetAsync()
         {
             LocationModel = await _context.Locations.ToListAsync();
+            LocationModel = LocationModel.Select(a => { a.Employee = _context.Employees.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
+            LocationModel = LocationModel.OrderBy(a => a.Ident).ToList();
         }
     }
 }

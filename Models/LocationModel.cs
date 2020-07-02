@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AWO_Orders.Models
 {
     // Model der Niederlassung
-    public class LocationModel
+    public class LocationModel :BaseModel
     {
         public int Id { get; set; }
 
@@ -25,14 +25,6 @@ namespace AWO_Orders.Models
 
         [DisplayName("Postleitzahl")]
         public string PLZ { get; set; }
-
-        [DisplayName("Zuletzt geändert")]
-        public DateTime Changed { get; set; }
-
-        [DisplayName("Von")]
-        public int ChangedBy { get; set; }
-
-
 
 
     }

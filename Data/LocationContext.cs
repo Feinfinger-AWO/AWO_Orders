@@ -16,6 +16,16 @@ namespace AWO_Orders.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<LocationModel>()
+                .HasOne(p => p.Employee)
+                .WithMany()
+                .HasForeignKey(p => p.ChangedBy);
+            
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<AWO_Orders.Models.LocationModel> Locations 
         { 
             get 
@@ -27,5 +37,7 @@ namespace AWO_Orders.Data
                 locations = value;
             }
         }
+
+        public DbSet<EmployeeModel> Employees { get; set; }
     }
 }

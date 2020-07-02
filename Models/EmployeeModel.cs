@@ -21,7 +21,7 @@ namespace AWO_Orders.Models
     /// <summary>
     /// Model für Mitarbeiter
     /// </summary>
-    public class EmployeeModel
+    public class EmployeeModel : BaseModel
     {
         private string password;
 
@@ -82,13 +82,6 @@ namespace AWO_Orders.Models
                 }
             } 
         }
-
-        [DisplayName("Geändert")]
-        public DateTime Changed { get; set; }
-
-        [DisplayName("Von")]
-        public int ChangedBy { get; set; }
-        public EmployeeModel Employee { get; set; }
 
     }
 }

@@ -35,6 +35,9 @@ namespace AWO_Orders.Location
             {
                 return Page();
             }
+            
+            LocationModel.Changed = DateTime.Now;
+            LocationModel.ChangedBy = LoginItem.EmployeeId;
 
             _context.Locations.Add(LocationModel);
             await _context.SaveChangesAsync();

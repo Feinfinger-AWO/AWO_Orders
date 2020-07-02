@@ -48,6 +48,9 @@ namespace AWO_Orders.Location
                 return Page();
             }
 
+            LocationModel.Changed = DateTime.Now;
+            LocationModel.ChangedBy = LoginItem.EmployeeId;
+
             _context.Attach(LocationModel).State = EntityState.Modified;
 
             try
