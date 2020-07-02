@@ -13,7 +13,6 @@ namespace AWO_Orders.Pages.Employees
 {
     public class IndexModel : PageModel
     {
-        private string filterText;
         private readonly AWO_Orders.Data.EmployeeContext _context;
         private IList<EmployeeModel> models;
 
@@ -24,19 +23,27 @@ namespace AWO_Orders.Pages.Employees
         public IndexModel(AWO_Orders.Data.EmployeeContext context)
         {
             _context = context;
+            EmployeeModel = new List<EmployeeModel>();
         }
 
         /// <summary>
         /// Mitarbeiter liste mit Fremdschlüsseln werden gefüllt
         /// </summary>
         /// <returns></returns>
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string searchString)
         {
             models = await _context.Employees.ToListAsync();
+            FilterText = searchString;
+
+            if (!String.IsNullOrWhiteSpace(FilterText))
+            {
+                models = models.Where(a=> a.Forename.ToLower().Contains(FilterText.ToLower())|| a.SureName.ToLower().Contains(FilterText.ToLower())).ToList();
+            }
+
             models = models.Select(a => { a.Employee = models.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
             models = models.Select(a => { a.Location = _context.Locations.Find(new object[] { a.LocationId });return a; }).ToList();
             models = models.Select(a => { a.Right = _context.Rights.Find(new object[] {  a.RightId }); return a; }).ToList();
-            EmployeeModel = models;
+            EmployeeModel = models.OrderBy(a=>a.SureName).ToList();
         }
 
         /// <summary>
@@ -47,22 +54,7 @@ namespace AWO_Orders.Pages.Employees
         /// <summary>
         /// Gets or sets the text to filter by surename and forename
         /// </summary>
-        public string FilterText
-        {
-            get{ return filterText; }
-            set 
-            {
-                filterText = value;
-                if (!String.IsNullOrWhiteSpace(value))
-                {
-                    EmployeeModel = models.Where(a => a.Forename.ToLower().Contains(value.ToLower()) ||
-                                        a.SureName.ToLower().Contains(value.ToLower())).ToList();
-                }
-                else
-                {
-                    EmployeeModel = models;
-                }
-            } 
-        }
+        public string FilterText { get; set; }
+
     }
 }

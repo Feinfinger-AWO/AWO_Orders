@@ -8,11 +8,12 @@
     <h1>Niederlassungen</h1>
 
 <p>
-    <a asp-page="Create">Neu</a>
+    <a asp-page="Erstellen">Neu</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.LocationModel[0].Ident)
             </th>
@@ -25,18 +26,21 @@
             <th>
                 @Html.DisplayNameFor(model => model.LocationModel[0].PLZ)
             </th>
-            <th>
+            <td>
                 @Html.DisplayNameFor(model => model.LocationModel[0].Changed)
-            </th>
-            <th>
+            </td>
+            <td>
                 @Html.DisplayNameFor(model => model.LocationModel[0].ChangedBy)
-            </th>
-            <th></th>
+            </td>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.LocationModel) {
         <tr>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
+                <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ident)
             </td>
@@ -54,11 +58,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ChangedBy)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
