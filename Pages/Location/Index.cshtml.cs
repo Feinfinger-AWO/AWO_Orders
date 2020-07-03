@@ -21,11 +21,22 @@ namespace AWO_Orders.Location
 
         public IList<LocationModel> LocationModel { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string searchString)
         {
+            FilterText = searchString;
+
             LocationModel = await _context.Locations.ToListAsync();
+
+            if (!String.IsNullOrWhiteSpace(FilterText))
+            {
+                LocationModel = LocationModel.Where(a => a.Ident.ToLower().Contains(FilterText.ToLower())).ToList();
+            }
+
             LocationModel = LocationModel.Select(a => { a.Employee = _context.Employees.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
             LocationModel = LocationModel.OrderBy(a => a.Ident).ToList();
+
         }
+
+        public string FilterText { get; set; }
     }
 }
