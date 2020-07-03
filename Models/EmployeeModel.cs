@@ -57,9 +57,21 @@ namespace AWO_Orders.Models
         [Required]
         public virtual int LocationId { get; set; }
         public LocationModel Location { get; set; }
-
+        private string passwordHash;
         [DisplayName("Passwort")]
-        public string PasswordHash { get; set; }
+        [Column("PasswordHash")]
+        [Required]
+        public string PasswordHash
+        { 
+            get 
+            { 
+                return passwordHash; 
+            }
+            set 
+            { 
+                passwordHash = value; 
+            }
+        }
 
         /// <summary>
         /// Erstellt Hashwert aus dem Passwort
@@ -73,10 +85,9 @@ namespace AWO_Orders.Models
             } 
             set 
             { 
-                password = value;
-
-                if (!string.IsNullOrWhiteSpace(password))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
+                    password = value;
                     byte[] salt = new byte[128 / 8];
                     PasswordHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(password, salt, KeyDerivationPrf.HMACSHA1,10000, 256 / 8));
                 }
