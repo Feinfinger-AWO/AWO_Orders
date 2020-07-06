@@ -3,7 +3,30 @@
 @{
     ViewData["Title"] = "AWO - Bestellungen";
 }
-
-<div class="text-left">
-    
-</div>
+@if (LoginItem.LoginFailed)
+{
+    <p>Login fehlgeschlagen!</p>
+}
+@if (LoginItem.EmployeeId == 0)
+{
+    <div class="text-left">
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="control-label">Name</label>
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Passwort</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Login" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

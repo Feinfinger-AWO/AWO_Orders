@@ -21,18 +21,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Location/Index">Niederlassungen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Employees/Index">Mitarbeiter</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Rights/Index">Rechteverwaltung</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/ArticleTypes/Index">Artikelverwaltung</a>
-                        </li>
+                        @if (LoginItem.Right != null &&( LoginItem.Right.CanOrder || LoginItem.Right.CanProcess))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Location/Index">Niederlassungen</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Employees/Index">Mitarbeiter</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Rights/Index">Rechteverwaltung</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/ArticleTypes/Index">Artikelverwaltung</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
