@@ -29,7 +29,7 @@ namespace AWO_Orders.Pages.Employees
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int Next)
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +41,14 @@ namespace AWO_Orders.Pages.Employees
             _context.Employees.Add(EmployeeModel);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            if (Next == 0)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("./Create");
+            }
         }
 
         /// <summary>

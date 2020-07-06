@@ -10,7 +10,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.ArticleTypes
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BasePageModel
     {
         private readonly AWO_Orders.Data.ArticleTypeContext _context;
 
@@ -29,17 +29,27 @@ namespace AWO_Orders.Pages.ArticleTypes
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int Next)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
+            SetBaseProbertiesOnPost(ArticleTypeModel);
+
             _context.ArticleTypes.Add(ArticleTypeModel);
+
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            if (Next == 0)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("./Create");
+            }
         }
     }
 }

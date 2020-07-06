@@ -15,5 +15,17 @@ namespace AWO_Orders.Data
         }
 
         public DbSet<AWO_Orders.Models.ArticleTypeModel> ArticleTypes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ArticleTypeModel>()
+                .HasOne(p => p.Employee)
+                .WithMany()
+                .HasForeignKey(p => p.ChangedBy);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public DbSet<EmployeeModel> Employees { get; set; }
     }
 }

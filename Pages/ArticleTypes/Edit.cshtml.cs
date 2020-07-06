@@ -11,7 +11,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.ArticleTypes
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
         private readonly AWO_Orders.Data.ArticleTypeContext _context;
 
@@ -47,6 +47,8 @@ namespace AWO_Orders.Pages.ArticleTypes
             {
                 return Page();
             }
+
+            SetBaseProbertiesOnPost(ArticleTypeModel);
 
             _context.Attach(ArticleTypeModel).State = EntityState.Modified;
 
