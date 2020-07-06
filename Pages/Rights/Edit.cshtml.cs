@@ -48,6 +48,9 @@ namespace AWO_Orders.Pages.Rights
                 return Page();
             }
 
+            RightModel.Changed = DateTime.Now;
+            RightModel.ChangedBy = LoginItem.EmployeeId;
+
             _context.Attach(RightModel).State = EntityState.Modified;
 
             try

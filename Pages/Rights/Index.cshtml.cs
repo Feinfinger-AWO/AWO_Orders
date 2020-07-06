@@ -24,6 +24,10 @@ namespace AWO_Orders.Pages.Rights
         public async Task OnGetAsync()
         {
             RightModel = await _context.Rights.ToListAsync();
+
+            RightModel = RightModel.Select(a => { a.Employee = _context.Employees.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
+            RightModel = RightModel.OrderBy(a => a.Ident).ToList();
         }
+
     }
 }

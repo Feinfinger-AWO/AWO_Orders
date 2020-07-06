@@ -5,14 +5,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Übersicht Rechte</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create"><img alt="Neu" src="Images\hinzufuegen32.png" /></a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.RightModel[0].Ident)
             </th>
@@ -31,12 +32,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.RightModel[0].ChangedBy)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.RightModel) {
         <tr>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
+                <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ident)
             </td>
@@ -53,12 +57,7 @@
                 @Html.DisplayFor(modelItem => item.Changed)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ChangedBy)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Employee.SureName)
             </td>
         </tr>
 }

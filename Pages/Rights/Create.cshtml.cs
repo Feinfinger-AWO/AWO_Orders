@@ -36,6 +36,9 @@ namespace AWO_Orders.Pages.Rights
                 return Page();
             }
 
+            RightModel.Changed = DateTime.Now;
+            RightModel.ChangedBy = LoginItem.EmployeeId;
+
             _context.Rights.Add(RightModel);
             await _context.SaveChangesAsync();
 
