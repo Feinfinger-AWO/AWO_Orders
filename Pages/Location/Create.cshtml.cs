@@ -10,7 +10,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Location
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BasePageModel
     {
         private readonly AWO_Orders.Data.LocationContext _context;
 
@@ -35,9 +35,8 @@ namespace AWO_Orders.Location
             {
                 return Page();
             }
-            
-            LocationModel.Changed = DateTime.Now;
-            LocationModel.ChangedBy = LoginItem.EmployeeId;
+
+            SetBaseProbertiesOnPost(LocationModel);
 
             _context.Locations.Add(LocationModel);
             await _context.SaveChangesAsync();

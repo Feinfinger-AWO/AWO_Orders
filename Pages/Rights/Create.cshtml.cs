@@ -10,7 +10,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.Rights
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BasePageModel
     {
         private readonly AWO_Orders.Data.RightContext _context;
 
@@ -36,8 +36,7 @@ namespace AWO_Orders.Pages.Rights
                 return Page();
             }
 
-            RightModel.Changed = DateTime.Now;
-            RightModel.ChangedBy = LoginItem.EmployeeId;
+            SetBaseProbertiesOnPost(RightModel);
 
             _context.Rights.Add(RightModel);
             await _context.SaveChangesAsync();

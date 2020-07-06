@@ -11,7 +11,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Location
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
         private readonly AWO_Orders.Data.LocationContext _context;
 
@@ -48,8 +48,7 @@ namespace AWO_Orders.Location
                 return Page();
             }
 
-            LocationModel.Changed = DateTime.Now;
-            LocationModel.ChangedBy = LoginItem.EmployeeId;
+            SetBaseProbertiesOnPost(LocationModel);
 
             _context.Attach(LocationModel).State = EntityState.Modified;
 

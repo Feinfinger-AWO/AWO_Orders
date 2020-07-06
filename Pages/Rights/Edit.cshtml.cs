@@ -11,7 +11,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.Rights
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
         private readonly AWO_Orders.Data.RightContext _context;
 
@@ -48,8 +48,7 @@ namespace AWO_Orders.Pages.Rights
                 return Page();
             }
 
-            RightModel.Changed = DateTime.Now;
-            RightModel.ChangedBy = LoginItem.EmployeeId;
+            SetBaseProbertiesOnPost(RightModel);
 
             _context.Attach(RightModel).State = EntityState.Modified;
 

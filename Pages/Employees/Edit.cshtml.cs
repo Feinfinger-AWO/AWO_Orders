@@ -11,7 +11,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.Employees
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
         private readonly AWO_Orders.Data.EmployeeContext _context;
 
@@ -50,8 +50,7 @@ namespace AWO_Orders.Pages.Employees
                 return Page();
             }
 
-            EmployeeModel.Changed = DateTime.Now;
-            EmployeeModel.ChangedBy = LoginItem.EmployeeId;
+            SetBaseProbertiesOnPost(EmployeeModel);
 
             _context.Attach(EmployeeModel).State = EntityState.Modified;
 
