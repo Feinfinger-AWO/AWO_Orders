@@ -20,8 +20,12 @@ namespace AWO_Orders.Models
         public DateTime PlaceDate { get; set; }
         [DisplayName("Status")]
         public int StatusId { get; set; }
+        public virtual OrderStatusModel Status { get; set; }
+
         [DisplayName("Mitarbeiter")]
         public int EmplId { get; set; }
+        public virtual EmployeeModel Owner { get; set; }
+
         [DisplayName("Bemerkung")]
         public string Note { get; set; }
     }

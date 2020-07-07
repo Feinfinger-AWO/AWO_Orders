@@ -1,0 +1,61 @@
+﻿@page
+@model AWO_Orders.Pages.Orders.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>OrderModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderModel.Number)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderModel.Number)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderModel.PlaceDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderModel.PlaceDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderModel.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderModel.Status.Ident)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderModel.EmplId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderModel.EmplId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderModel.Note)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderModel.Note)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderModel.Changed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderModel.Changed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderModel.Employee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderModel.Employee.EMail)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.OrderModel.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
