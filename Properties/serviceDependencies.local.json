@@ -15,6 +15,10 @@
     "mssql4": {
       "type": "mssql.local",
       "connectionId": "ArticleTypeContext"
+    },
+    "mssql5": {
+      "type": "mssql.local",
+      "connectionId": "OrderStatusContext"
     }
   }
 }

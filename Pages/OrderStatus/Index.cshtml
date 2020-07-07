@@ -1,0 +1,53 @@
+﻿@page
+@model AWO_Orders.Pages.OrderStatus.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Übersicht Auftragsstatus</h1>
+
+<p>
+    <a asp-page="Create"><img alt="Neu" src="Images\hinzufuegen32.png" /></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatusModel[0].Ident)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatusModel[0].Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatusModel[0].Changed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatusModel[0].ChangedBy)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OrderStatusModel) {
+        <tr>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
+                <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ident)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Changed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.SureName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

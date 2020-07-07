@@ -1,0 +1,40 @@
+﻿@page
+@model AWO_Orders.Pages.OrderStatus.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Auftragsstatus</h1>
+
+<h4>Bearbeiten</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OrderStatusModel.Id" />
+            <div class="form-group">
+                <label asp-for="OrderStatusModel.Ident" class="control-label"></label>
+                <input asp-for="OrderStatusModel.Ident" class="form-control" />
+                <span asp-validation-for="OrderStatusModel.Ident" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderStatusModel.Note" class="control-label"></label>
+                <input asp-for="OrderStatusModel.Note" class="form-control" />
+                <span asp-validation-for="OrderStatusModel.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Zurück</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

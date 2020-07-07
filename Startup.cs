@@ -56,6 +56,9 @@ namespace AWO_Orders
 
             LoginItem.ConnectionString = builder.ConnectionString;
 
+            services.AddDbContext<OrderStatusContext>(options =>
+                    options.UseSqlServer(builder.ConnectionString));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
