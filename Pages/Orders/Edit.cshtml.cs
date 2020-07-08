@@ -30,7 +30,7 @@ namespace AWO_Orders.Pages.Orders
                 return NotFound();
             }
 
-            OrderModel = await _context.Order
+            OrderModel = await _context.Orders
                 .Include(o => o.Employee)
                 .Include(o => o.Status).FirstOrDefaultAsync(m => m.Id == id);
 
@@ -75,7 +75,7 @@ namespace AWO_Orders.Pages.Orders
 
         private bool OrderModelExists(int id)
         {
-            return _context.Order.Any(e => e.Id == id);
+            return _context.Orders.Any(e => e.Id == id);
         }
     }
 }

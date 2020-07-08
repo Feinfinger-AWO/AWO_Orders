@@ -23,7 +23,7 @@ namespace AWO_Orders.Pages.Orders
 
         public async Task OnGetAsync()
         {
-            OrderModel = await _context.Order
+            OrderModel = await _context.Orders
                 .Include(o => o.Employee)
                 .Include(o => o.Status).ToListAsync();
             OrderModel = OrderModel.OrderBy(a => a.PlaceDate).ToList();

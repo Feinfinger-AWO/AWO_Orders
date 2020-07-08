@@ -18,31 +18,48 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
                         @if (LoginItem.Right != null && (LoginItem.Right.CanOrder || LoginItem.Right.CanProcess))
                         {
+
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Location/Index">Niederlassungen</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Employees/Index">Mitarbeiter</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Rights/Index">Rechteverwaltung</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/ArticleTypes/Index">Artikelverwaltung</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/OrderStatus/Index">Auftragsstatus</a>
+                                <div class="dropdown">
+                                    <button class="dropbtn">Stammdaten</button>
+                                    <div class="dropdown-content">
+
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Location/Index">Niederlassungen</a>
+
+
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Employees/Index">Mitarbeiter</a>
+
+
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Rights/Index">Rechteverwaltung</a>
+
+
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/ArticleTypes/Index">Artikelverwaltung</a>
+
+
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/OrderStatus/Index">Auftragsstatus</a>
+                                    </div>
+                                </div>
                             </li>
                         }
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                        @if (LoginItem.Right != null && LoginItem.Right.CanView == true)
+                        {
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <button class="dropbtn">Bestellungen</button>
+                                    <div class="dropdown-content">
+
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Orders/Index">Übersicht</a>
+
+                                    </div>
+                                </div>
+                            </li>
+                        }
+
+</div>
+                        </div>
+                    </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

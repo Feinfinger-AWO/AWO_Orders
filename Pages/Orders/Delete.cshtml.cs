@@ -29,7 +29,7 @@ namespace AWO_Orders.Pages.Orders
                 return NotFound();
             }
 
-            OrderModel = await _context.Order
+            OrderModel = await _context.Orders
                 .Include(o => o.Employee)
                 .Include(o => o.Status).FirstOrDefaultAsync(m => m.Id == id);
 
@@ -47,11 +47,11 @@ namespace AWO_Orders.Pages.Orders
                 return NotFound();
             }
 
-            OrderModel = await _context.Order.FindAsync(id);
+            OrderModel = await _context.Orders.FindAsync(id);
 
             if (OrderModel != null)
             {
-                _context.Order.Remove(OrderModel);
+                _context.Orders.Remove(OrderModel);
                 await _context.SaveChangesAsync();
             }
 

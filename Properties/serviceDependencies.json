@@ -23,6 +23,10 @@
     "mssql6": {
       "type": "mssql",
       "connectionId": "OrdersContext"
+    },
+    "mssql7": {
+      "type": "mssql",
+      "connectionId": "OrderLogEntriesContext"
     }
   }
 }

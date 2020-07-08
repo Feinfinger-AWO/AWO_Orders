@@ -24,7 +24,7 @@ namespace AWO_Orders.Models
 
         [DisplayName("Mitarbeiter")]
         public int EmplId { get; set; }
-        public virtual EmployeeModel Owner { get; set; }
+        public virtual EmployeeModel Empl { get; set; }
 
         [DisplayName("Bemerkung")]
         public string Note { get; set; }

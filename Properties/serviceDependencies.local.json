@@ -23,6 +23,10 @@
     "mssql6": {
       "type": "mssql.local",
       "connectionId": "OrdersContext"
+    },
+    "mssql7": {
+      "type": "mssql.local",
+      "connectionId": "OrderLogEntriesContext"
     }
   }
 }

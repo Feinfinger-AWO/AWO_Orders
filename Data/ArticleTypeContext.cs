@@ -14,8 +14,6 @@ namespace AWO_Orders.Data
         {
         }
 
-        public DbSet<AWO_Orders.Models.ArticleTypeModel> ArticleTypes { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ArticleTypeModel>()
@@ -27,5 +25,6 @@ namespace AWO_Orders.Data
         }
 
         public DbSet<EmployeeModel> Employees { get; set; }
+        public DbSet<AWO_Orders.Models.ArticleTypeModel> ArticleTypes { get; set; }
     }
 }

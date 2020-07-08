@@ -8,18 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using AWO_Orders.Data;
 using AWO_Orders.Models;
 
-namespace AWO_Orders.Pages.Orders
+namespace AWO_Orders.Pages.OrderLog
 {
     public class DetailsModel : PageModel
     {
-        private readonly AWO_Orders.Data.OrdersContext _context;
+        private readonly AWO_Orders.Data.OrderLogEntriesContext _context;
 
-        public DetailsModel(AWO_Orders.Data.OrdersContext context)
+        public DetailsModel(AWO_Orders.Data.OrderLogEntriesContext context)
         {
             _context = context;
         }
 
-        public OrderModel OrderModel { get; set; }
+        public OrderLogEntriesModel OrderLogEntriesModel { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,11 +28,9 @@ namespace AWO_Orders.Pages.Orders
                 return NotFound();
             }
 
-            OrderModel = await _context.Orders
-                .Include(o => o.Employee)
-                .Include(o => o.Status).FirstOrDefaultAsync(m => m.Id == id);
+            OrderLogEntriesModel = await _context.OrderLogEntries.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (OrderModel == null)
+            if (OrderLogEntriesModel == null)
             {
                 return NotFound();
             }

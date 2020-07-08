@@ -24,6 +24,21 @@ namespace AWO_Orders.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<AWO_Orders.Models.OrderModel> Order { get; set; }
+        /// <summary>
+        /// Erstellt eine neue Auftragsnummer
+        /// </summary>
+        /// <returns></returns>
+        public string CreateNumber()
+        {
+            var number = DateTime.Now.Year.ToString();
+
+
+
+            return number;
+        }
+
+        public DbSet<AWO_Orders.Models.OrderModel> Orders { get; set; }
+        public DbSet<EmployeeModel> Employees { get; set; }
+        public DbSet<OrderStatusModel> OrderStatus { get; set; }
     }
 }

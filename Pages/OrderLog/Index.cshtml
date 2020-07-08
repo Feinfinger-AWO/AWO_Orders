@@ -1,0 +1,54 @@
+﻿@page
+@model AWO_Orders.Pages.OrderLog.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderLogEntriesModel[0].ChangeType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderLogEntriesModel[0].OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderLogEntriesModel[0].EmplId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderLogEntriesModel[0].OrderPositionId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OrderLogEntriesModel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChangeType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmplId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderPositionId)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

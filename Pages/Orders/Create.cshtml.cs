@@ -12,23 +12,22 @@ namespace AWO_Orders.Pages.Orders
 {
     public class CreateModel : BasePageModel
     {
+        private OrderModel orderModel;
         private readonly AWO_Orders.Data.OrdersContext _context;
 
         public CreateModel(AWO_Orders.Data.OrdersContext context)
         {
             _context = context;
         }
-
+        
         public IActionResult OnGet()
         {
-            ViewData["ChangedBy"] = new SelectList(_context.Set<EmployeeModel>(), "Id", "EMail");
             ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>(), "Id", "Ident");
-            OrderModel.StatusId = 1;
             return Page();
         }
 
         [BindProperty]
-        public OrderModel OrderModel { get; set; }
+        public OrderModel OrderModel { get => orderModel; set{ orderModel = value; orderModel.StatusId = 1; orderModel.PlaceDate = DateTime.Now; } }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -42,7 +41,7 @@ namespace AWO_Orders.Pages.Orders
             SetBaseProbertiesOnPost(OrderModel);
             OrderModel.EmplId = LoginItem.EmployeeId;
 
-            _context.Order.Add(OrderModel);
+            _context.Orders.Add(OrderModel);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
