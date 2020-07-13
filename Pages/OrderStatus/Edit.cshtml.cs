@@ -30,6 +30,14 @@ namespace AWO_Orders.Pages.OrderStatus
                 return NotFound();
             }
 
+            var values = Enum.GetValues(typeof(OrderBaseStatusEnum)).Cast<OrderBaseStatusEnum>();
+
+            ViewData["BaseStatus"] = new SelectList(values.Select(v => new SelectListItem
+            {
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList(), "Value", "Text");
+
             OrderStatusModel = await _context.OrderStatus
                 .Include(o => o.Employee).FirstOrDefaultAsync(m => m.Id == id);
 

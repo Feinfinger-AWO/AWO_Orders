@@ -21,7 +21,14 @@ namespace AWO_Orders.Pages.OrderStatus
 
         public IActionResult OnGet()
         {
-        ViewData["ChangedBy"] = new SelectList(_context.Set<EmployeeModel>(), "Id", "EMail");
+            var values = Enum.GetValues(typeof(OrderBaseStatusEnum)).Cast<OrderBaseStatusEnum>();
+
+            ViewData["BaseStatus"] = new SelectList(values.Select(v=>new SelectListItem 
+            { 
+                Text = v.ToString(), 
+                Value = ((int)v).ToString() 
+            }).ToList(),"Value","Text");
+
             return Page();
         }
 

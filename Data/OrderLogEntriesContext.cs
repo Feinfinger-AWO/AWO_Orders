@@ -14,6 +14,25 @@ namespace AWO_Orders.Data
         {
         }
 
+        /// <summary>
+        /// Schreibt Änderungen an der Bestellung
+        /// </summary>
+        /// <param name="Order"></param>
+        /// <param name="changeType"></param>
+        public void WriteLog(OrderModel Order,LogChangeTypesEnum changeType)
+        {
+            var log = new OrderLogEntriesModel()
+            {
+                OrderId = Order.Id,
+                EmplId = LoginItem.EmployeeId,
+                ChangeType = changeType,
+                ChangeDateTime = DateTime.Now
+            };
+
+            OrderLogEntries.Add(log);
+            SaveChanges();
+        }
+
         public DbSet<AWO_Orders.Models.OrderLogEntriesModel> OrderLogEntries { get; set; }
     }
 }

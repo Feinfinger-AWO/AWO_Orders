@@ -13,10 +13,15 @@ namespace AWO_Orders.Models
     public class OrderStatusModel : BaseModel
     {
         public int Id { get; set; }
+
         [Required]
         [DisplayName("Name")]
         public string Ident { get; set; }
+
         [DisplayName("Bemerkung")]
         public string Note { get; set; }
+
+        [DisplayName("Basistyp")]
+        public OrderBaseStatusEnum BaseStatus { get; set; }
     }
 }

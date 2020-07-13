@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AWO_Orders.Data;
 using AWO_Orders.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AWO_Orders.Pages.Orders
 {
@@ -26,8 +27,19 @@ namespace AWO_Orders.Pages.Orders
             return Page();
         }
 
+
+
         [BindProperty]
-        public OrderModel OrderModel { get => orderModel; set{ orderModel = value; orderModel.StatusId = 1; orderModel.PlaceDate = DateTime.Now; } }
+        public OrderModel OrderModel { 
+            get => orderModel; 
+            set
+            { 
+                orderModel = value; 
+                orderModel.StatusId = 1; 
+                orderModel.PlaceDate = DateTime.Now; 
+                orderModel.Number = DateTime.Now.Year.ToString(); 
+            } 
+        }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -44,7 +56,20 @@ namespace AWO_Orders.Pages.Orders
             _context.Orders.Add(OrderModel);
             await _context.SaveChangesAsync();
 
+            _context.Update(OrderModel);
+
+            orderModel.Number = DateTime.Now.Year.ToString() + orderModel.Id.ToString("000000");
+
+            await _context.SaveChangesAsync();
+
+            var options = new DbContextOptionsBuilder<OrderLogEntriesContext>();
+            options.UseSqlServer(LoginItem.ConnectionString);
+            var logContext = new OrderLogEntriesContext(options.Options);
+            logContext.WriteLog(orderModel, LogChangeTypesEnum.CreateOrder);
+
             return RedirectToPage("./Index");
         }
+
+        
     }
 }
