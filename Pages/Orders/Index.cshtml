@@ -13,6 +13,12 @@
     <a asp-page="Create"><img alt="Neu" src="Images\hinzufuegen32.png" /></a>
     }
 </p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>Suche [Nummer/Mitarbeiter]</p>
+        <p><input class="form-control" name="searchString" width="200" value="@Model.FilterText" /></p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>

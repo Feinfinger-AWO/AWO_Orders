@@ -37,6 +37,7 @@
 
         <form method="post">
             <input type="hidden" asp-for="OrderModel.Id" />
+            <input type="hidden" asp-for="OrderModel.Status.BaseStatus" />
             <input type="submit" value="Cancel" class="btn btn-danger" /> |
             <a asp-page="./Index">Back to List</a>
         </form>
@@ -71,6 +72,7 @@ else
 
         <form method="post">
             <input type="hidden" asp-for="OrderModel.Id" />
+            <input type="hidden" asp-for="OrderModel.Status.BaseStatus" />
             <input type="submit" value="Delete" class="btn btn-danger" /> |
             <a asp-page="./Index">Back to List</a>
         </form>

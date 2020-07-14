@@ -11,7 +11,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.Orders
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
         private readonly AWO_Orders.Data.OrdersContext _context;
 
@@ -38,7 +38,7 @@ namespace AWO_Orders.Pages.Orders
             {
                 return NotFound();
             }
-           ViewData["ChangedBy"] = new SelectList(_context.Set<EmployeeModel>(), "Id", "EMail");
+
            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>(), "Id", "Ident");
             return Page();
         }
@@ -51,6 +51,8 @@ namespace AWO_Orders.Pages.Orders
             {
                 return Page();
             }
+
+            SetBaseProbertiesOnPost(OrderModel);
 
             _context.Attach(OrderModel).State = EntityState.Modified;
 

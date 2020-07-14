@@ -51,7 +51,16 @@ namespace AWO_Orders.Pages.Orders
 
             if (OrderModel != null)
             {
-                _context.Orders.Remove(OrderModel);
+                var status = _context.OrderStatus.Single(s => s.Id == OrderModel.StatusId);
+                if (status.BaseStatus ==  OrderBaseStatusEnum.Open)
+                {
+                    _context.Orders.Remove(OrderModel);
+                }
+                else
+                {
+                    OrderModel.StatusId = _context.OrderStatus.SingleOrDefault(s => s.BaseStatus == OrderBaseStatusEnum.Canceled).Id;
+                }
+
                 await _context.SaveChangesAsync();
             }
 
