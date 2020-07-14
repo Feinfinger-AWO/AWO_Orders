@@ -18,6 +18,10 @@
         <p>Suche [Nummer/Mitarbeiter]</p>
         <p><input class="form-control" name="searchString" width="200" value="@Model.FilterText" /></p>
     </div>
+    <div class="form-actions no-color">
+        <p>Status</p>
+        <p> <select name="filterStatusId" asp-for="FilterStatusId" width="200" value ="@Model.FilterStatusId" class="form-control" asp-items="ViewBag.StatusId" onchange="submit()"></select></p>
+    </div>
 </form>
 <table class="table">
     <thead>
@@ -58,7 +62,7 @@
 
                 @if (LoginItem.Right.CanView)
                 {
-                    <a asp-page="./Details" asp-route-id="@item.Id"><img alt="Details" src="Images\detailansicht32.png" /></a>
+                    <a asp-page="/OrderPositions/Index" asp-route-id="@item.Id"><img alt="Details" src="Images\detailansicht32.png" /></a>
                 }
             </td>
             <td>

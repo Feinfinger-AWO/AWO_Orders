@@ -67,7 +67,7 @@ namespace AWO_Orders.Pages.Orders
             var logContext = new OrderLogEntriesContext(options.Options);
             logContext.WriteLog(orderModel, LogChangeTypesEnum.CreateOrder);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/OrderPositions/Index",OrderModel.Id);
         }
 
         

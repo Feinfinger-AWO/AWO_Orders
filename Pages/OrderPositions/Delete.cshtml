@@ -1,0 +1,70 @@
+﻿@page
+@model AWO_Orders.Pages.OrderPositions.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>OrderPosition</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderPosition.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderPosition.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderPosition.ArticleNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderPosition.ArticleNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderPosition.Count)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderPosition.Count)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderPosition.Order)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderPosition.Order.Number)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderPosition.ArticleType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderPosition.ArticleType.Ident)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderPosition.Number)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderPosition.Number)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderPosition.Changed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderPosition.Changed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderPosition.Employee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrderPosition.Employee.EMail)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="OrderPosition.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
