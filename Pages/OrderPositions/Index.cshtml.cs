@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AWO_Orders.Data;
 using AWO_Orders.Models;
+using System.Security.Cryptography;
 
 namespace AWO_Orders.Pages.OrderPositions
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly AWO_Orders.Data.OrderPositionContext _context;
 
@@ -18,8 +19,6 @@ namespace AWO_Orders.Pages.OrderPositions
         {
             _context = context;
         }
-
-        public IList<OrderPosition> OrderPosition { get;set; }
 
         public async Task OnGetAsync(int id)
         {
@@ -30,6 +29,14 @@ namespace AWO_Orders.Pages.OrderPositions
                 .Include(o => o.ArticleType)
                 .Include(o => o.Employee)
                 .Include(o => o.Order).Where(a=>a.OrderId == id).ToListAsync();
+
+            var order = from o in _context.Orders where o.Id == id select o;
+            Order = await order.SingleOrDefaultAsync();
         }
+
+
+        public IList<OrderPositionModel> OrderPosition { get; set; }
+
+        public OrderModel Order { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace AWO_Orders.Pages.OrderPositions
             _context = context;
         }
 
-        public OrderPosition OrderPosition { get; set; }
+        public OrderPositionModel OrderPosition { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

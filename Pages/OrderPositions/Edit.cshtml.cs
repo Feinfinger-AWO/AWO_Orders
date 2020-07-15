@@ -21,7 +21,7 @@ namespace AWO_Orders.Pages.OrderPositions
         }
 
         [BindProperty]
-        public OrderPosition OrderPosition { get; set; }
+        public OrderPositionModel OrderPosition { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

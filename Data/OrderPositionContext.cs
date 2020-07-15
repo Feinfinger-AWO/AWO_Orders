@@ -14,6 +14,25 @@ namespace AWO_Orders.Data
         {
         }
 
-        public DbSet<AWO_Orders.Models.OrderPosition> OrderPositions { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderPositionModel>()
+                .HasOne(p => p.Employee)
+                .WithMany()
+                .HasForeignKey(p => p.ChangedBy);
+
+            modelBuilder.Entity<OrderPositionModel>()
+                .HasOne(p => p.ArticleType)
+                .WithMany()
+                .HasForeignKey(p => p.ArticleTypeId);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public DbSet<AWO_Orders.Models.OrderPositionModel> OrderPositions { get; set; }
+
+        public DbSet<AWO_Orders.Models.OrderModel> Orders { get; set; }
+        public DbSet<AWO_Orders.Models.ArticleTypeModel> ArticleTypes { get; set; }
+        public DbSet<AWO_Orders.Models.EmployeeModel> Employees { get; set; }
     }
 }
