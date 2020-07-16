@@ -15,10 +15,16 @@
         <a asp-page="Create" asp-route-id="@Model.Order.Id"><img alt="Neu" src="Images\hinzufuegen32.png" /></a>
     }
 </p>
+<p>
+    <a asp-page="/Orders/Index">Zurück</a>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderPosition[0].Number)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.OrderPosition[0].Description)
             </th>
@@ -34,9 +40,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.OrderPosition[0].ArticleType)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderPosition[0].Number)
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -48,6 +51,9 @@
                     <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
                     <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>
                 }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -63,9 +69,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ArticleType.Ident)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Number)
             </td>
         </tr>
 }

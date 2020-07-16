@@ -21,9 +21,11 @@ namespace AWO_Orders.Pages.OrderPositions
         /// <returns></returns>
         private int GetPositionNumber()
         {
-            if (!_context.OrderPositions.Any()) return 1;
+            var positions = from p in _context.OrderPositions where p.OrderId == OrderId select p;
 
-            var number =_context.OrderPositions.Max(a => a.Number);
+            if (!positions.Any()) return 1;
+
+            var number = positions.Max(a => a.Number);
             return number + 1;
         }
 
@@ -35,7 +37,7 @@ namespace AWO_Orders.Pages.OrderPositions
         public IActionResult OnGet(int id)
         {
             OrderId = id;
-            ViewData["Number"] = GetPositionNumber();
+            Number = GetPositionNumber();
             ViewData["ArticleTypeId"] = new SelectList(_context.Set<ArticleTypeModel>(), "Id", "Ident");
             ViewData["OrderId"] = OrderId;
             return Page();
@@ -53,12 +55,16 @@ namespace AWO_Orders.Pages.OrderPositions
                 return Page();
             }
 
+            SetBaseProbertiesOnPost(OrderPosition);
+
             _context.OrderPositions.Add(OrderPosition);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index", OrderId);
+            return RedirectToPage("./Index", new { id = OrderPosition.OrderId });
         }
 
         public int OrderId { get; set; }
+
+        public int Number { get; set; }
     }
 }
