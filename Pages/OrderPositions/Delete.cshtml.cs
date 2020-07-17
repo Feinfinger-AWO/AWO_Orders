@@ -14,13 +14,15 @@ namespace AWO_Orders.Pages.OrderPositions
     {
         private readonly AWO_Orders.Data.OrderPositionContext _context;
 
+        private void ReorderPositions()
+        {
+            //todo
+        }
+
         public DeleteModel(AWO_Orders.Data.OrderPositionContext context)
         {
             _context = context;
         }
-
-        [BindProperty]
-        public OrderPositionModel OrderPosition { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -38,6 +40,8 @@ namespace AWO_Orders.Pages.OrderPositions
             {
                 return NotFound();
             }
+
+            OrderId = OrderPosition.OrderId;
             return Page();
         }
 
@@ -54,9 +58,15 @@ namespace AWO_Orders.Pages.OrderPositions
             {
                 _context.OrderPositions.Remove(OrderPosition);
                 await _context.SaveChangesAsync();
+                ReorderPositions();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { id = OrderPosition.OrderId });
         }
+
+        [BindProperty]
+        public OrderPositionModel OrderPosition { get; set; }
+
+        public int OrderId { get; set; }
     }
 }

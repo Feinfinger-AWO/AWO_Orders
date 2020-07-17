@@ -48,8 +48,9 @@ namespace AWO_Orders.Pages.OrderPositions
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(decimal Count)
         {
+            OrderPosition.Count = Count;
             if (!ModelState.IsValid)
             {
                 return Page();

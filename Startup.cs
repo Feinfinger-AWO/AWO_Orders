@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Connections;
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
+using System.Globalization;
+using System.Threading;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 namespace AWO_Orders
 {
@@ -35,7 +39,7 @@ namespace AWO_Orders
             builder.Authentication = SqlAuthenticationMethod.SqlPassword;
 
             services.AddRazorPages();
-            services.AddDbContext<LocationContext>(options => 
+            services.AddDbContext<LocationContext>(options =>
             {
                 options.UseSqlServer(builder.ConnectionString);
             });
@@ -68,6 +72,20 @@ namespace AWO_Orders
             services.AddDbContext<OrderPositionContext>(options =>
                     options.UseSqlServer(builder.ConnectionString));
 
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                 {
+                    new CultureInfo("en"),
+                    new CultureInfo("de"),
+                    new CultureInfo("en-GB")
+                };
+                options.DefaultRequestCulture = new RequestCulture("de");
+                options.DefaultRequestCulture.Culture.NumberFormat.NumberDecimalSeparator = ",";
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,6 +103,9 @@ namespace AWO_Orders
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseAuthorization();
 

@@ -42,18 +42,30 @@ namespace AWO_Orders.Pages
                     byte[] salt = new byte[128 / 8];
                     var passwordHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(Password, salt, KeyDerivationPrf.HMACSHA1, 10000, 256 / 8));
 
-                    var employee = context.Employees.Where(e => e.SureName.ToLower() == Name.ToLower() && e.PasswordHash == passwordHash);
+                    var employeeList = from c in context.Employees where c.SureName.ToLower() == Name.ToLower() select c;
 
-                    if (employee == null || !employee.Any())
+                    var employee = employeeList.Where(e => e.PasswordHash == passwordHash);
+
+                    if ((employee == null || !employee.Any()) && context.Employees.Any())
                     {
                         LoginItem.LoginFailed = true;
                     }
                     else
                     {
                         LoginItem.LoggedIn = DateTime.Now;
-                        LoginItem.EmployeeId = employee.First().Id;
+                        LoginItem.EmployeeId = (employee != null)?employee.First().Id : 1;
                         LoginItem.LoginFailed = false;
                         LoginItem.Right = context.Rights.SingleOrDefault(r => r.Id == employee.First().RightId);
+                        if(LoginItem.Right == null)
+                        {
+                            LoginItem.Right = new Models.RightModel()
+                            {
+                                CanOrder = true,
+                                CanProcess= true,
+                                CanView = true,
+                                Id=1,
+                            };
+                        }
                     }
                 }
             }

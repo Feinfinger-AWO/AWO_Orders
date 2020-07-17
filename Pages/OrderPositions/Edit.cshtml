@@ -5,9 +5,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Position</h1>
 
-<h4>OrderPosition</h4>
+<h4>Bearbeiten</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -26,13 +26,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="OrderPosition.Count" class="control-label"></label>
-                <input asp-for="OrderPosition.Count" class="form-control" />
+                <input name="Count" id="Count" class="form-control" value="@Model.OrderPosition.Count" />
                 <span asp-validation-for="OrderPosition.Count" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderPosition.OrderId" class="control-label"></label>
-                <select asp-for="OrderPosition.OrderId" class="form-control" asp-items="ViewBag.OrderId"></select>
-                <span asp-validation-for="OrderPosition.OrderId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OrderPosition.ArticleTypeId" class="control-label"></label>
@@ -40,21 +35,8 @@
                 <span asp-validation-for="OrderPosition.ArticleTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OrderPosition.Number" class="control-label"></label>
-                <input asp-for="OrderPosition.Number" class="form-control" />
-                <span asp-validation-for="OrderPosition.Number" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderPosition.Changed" class="control-label"></label>
-                <input asp-for="OrderPosition.Changed" class="form-control" />
-                <span asp-validation-for="OrderPosition.Changed" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderPosition.ChangedBy" class="control-label"></label>
-                <select asp-for="OrderPosition.ChangedBy" class="form-control" asp-items="ViewBag.ChangedBy"></select>
-                <span asp-validation-for="OrderPosition.ChangedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+                <input asp-for="OrderPosition.OrderId" value="@Model.OrderId" type="hidden" />
+                <input asp-for="OrderPosition.Number" value="@Model.Number" type="hidden" />
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -62,7 +44,7 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index"  asp-route-id="@Model.OrderId">Zurück</a>
 </div>
 
 @section Scripts {

@@ -11,7 +11,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.OrderPositions
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
         private readonly AWO_Orders.Data.OrderPositionContext _context;
 
@@ -39,21 +39,25 @@ namespace AWO_Orders.Pages.OrderPositions
             {
                 return NotFound();
             }
-           ViewData["ArticleTypeId"] = new SelectList(_context.Set<ArticleTypeModel>(), "Id", "Ident");
-           ViewData["ChangedBy"] = new SelectList(_context.Set<EmployeeModel>(), "Id", "EMail");
-           ViewData["OrderId"] = new SelectList(_context.Set<OrderModel>(), "Id", "Number");
+
+            OrderId = OrderPosition.OrderId;
+            Number = OrderPosition.Number;
+
+            ViewData["ArticleTypeId"] = new SelectList(_context.Set<ArticleTypeModel>(), "Id", "Ident");           
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(decimal Count)
         {
+            OrderPosition.Count = Count;
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-
+            // <input asp-for="OrderPosition.Count" class="form-control" />
+            SetBaseProbertiesOnPost(OrderPosition);
             _context.Attach(OrderPosition).State = EntityState.Modified;
 
             try
@@ -72,12 +76,16 @@ namespace AWO_Orders.Pages.OrderPositions
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { id = OrderPosition.OrderId });
         }
 
         private bool OrderPositionExists(int id)
         {
             return _context.OrderPositions.Any(e => e.Id == id);
         }
+
+        public int OrderId { get; set; }
+
+        public int Number { get; set; }
     }
 }
