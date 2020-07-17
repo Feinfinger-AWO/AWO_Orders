@@ -24,9 +24,13 @@ namespace AWO_Orders.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public void OnGet(int? exit)
         {
-         
+            if (exit.HasValue && exit.Value == 1)
+            {
+                Logout();
+                return;
+            }
         }
 
         /// <summary>

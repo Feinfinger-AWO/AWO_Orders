@@ -39,6 +39,11 @@ namespace AWO_Orders.Models
             HttpContext.Session.SetString("Login", JsonConvert.SerializeObject(item));
         }
 
+        protected void Logout()
+        {
+            HttpContext.Session.Clear();
+        }
+
         public LoginItem SessionLoginItem 
         { 
             get 
