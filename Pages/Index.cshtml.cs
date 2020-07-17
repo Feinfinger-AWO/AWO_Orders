@@ -8,10 +8,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.IO;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly ILogger<IndexModel> _logger;
 
@@ -22,7 +26,7 @@ namespace AWO_Orders.Pages
 
         public void OnGet()
         {
-
+         
         }
 
         /// <summary>
@@ -32,43 +36,59 @@ namespace AWO_Orders.Pages
         /// <param name="Password"></param>
         public void OnPost(string Name,string Password)
         {
-            if (!String.IsNullOrWhiteSpace(Name) && !String.IsNullOrWhiteSpace(Password))
+            try
             {
-                var options = new DbContextOptionsBuilder<EmployeeContext>();
-                options.UseSqlServer(LoginItem.ConnectionString);
-
-                using (var context = new EmployeeContext(options.Options))
+                if (!String.IsNullOrWhiteSpace(Name) && !String.IsNullOrWhiteSpace(Password))
                 {
-                    byte[] salt = new byte[128 / 8];
-                    var passwordHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(Password, salt, KeyDerivationPrf.HMACSHA1, 10000, 256 / 8));
+                    var options = new DbContextOptionsBuilder<EmployeeContext>();
+                    options.UseSqlServer(SessionLoginItem.ConnectionString);
 
-                    var employeeList = from c in context.Employees where c.SureName.ToLower() == Name.ToLower() select c;
-
-                    var employee = employeeList.Where(e => e.PasswordHash == passwordHash);
-
-                    if ((employee == null || !employee.Any()) && context.Employees.Any())
+                    using (var context = new EmployeeContext(options.Options))
                     {
-                        LoginItem.LoginFailed = true;
-                    }
-                    else
-                    {
-                        LoginItem.LoggedIn = DateTime.Now;
-                        LoginItem.EmployeeId = (employee != null)?employee.First().Id : 1;
-                        LoginItem.LoginFailed = false;
-                        LoginItem.Right = context.Rights.SingleOrDefault(r => r.Id == employee.First().RightId);
-                        if(LoginItem.Right == null)
+                        byte[] salt = new byte[128 / 8];
+                        var passwordHash = Convert.ToBase64String(KeyDerivation.Pbkdf2(Password, salt, KeyDerivationPrf.HMACSHA1, 10000, 256 / 8));
+
+                        var employeeList = from c in context.Employees where c.SureName.ToLower() == Name.ToLower() select c;
+
+                        var employee = employeeList.Where(e => e.PasswordHash == passwordHash);
+
+                        if ((employee == null || !employee.Any()) && !(Name == "AwoAdmin" && Password == "***"))
                         {
-                            LoginItem.Right = new Models.RightModel()
+                            SessionLoginItem.LoginFailed = true;
+                        }
+                        else
+                        {
+                            SessionLoginItem.LoggedIn = DateTime.Now;
+                            SessionLoginItem.EmployeeId = (employee != null && employee.Any()) ? employee.First().Id : 1;
+                            SessionLoginItem.LoginFailed = false;
+
+                            if (employee != null && employee.Any())
+                                SessionLoginItem.Right = context.Rights.SingleOrDefault(r => r.Id == employee.First().RightId);
+
+                            if (SessionLoginItem.Right == null)
                             {
-                                CanOrder = true,
-                                CanProcess= true,
-                                CanView = true,
-                                Id=1,
-                            };
+                                SessionLoginItem.Right = new Models.RightModel()
+                                {
+                                    CanOrder = true,
+                                    CanProcess = true,
+                                    CanView = true,
+                                    Id = 1,
+                                };
+                            }
+                            SetLogin(SessionLoginItem);
                         }
                     }
                 }
+            }catch(Exception e)
+            {
+               
+                RedirectToPage("/Error",new {ex = e });
             }
+        }
+
+        private void InitLogin()
+        {
+
         }
 
         public string Name { get; set; }

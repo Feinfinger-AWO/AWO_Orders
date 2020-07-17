@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AWO_Orders.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace AWO_Orders.Data
 {
@@ -19,12 +20,13 @@ namespace AWO_Orders.Data
         /// </summary>
         /// <param name="Order"></param>
         /// <param name="changeType"></param>
-        public void WriteLog(OrderModel Order,LogChangeTypesEnum changeType)
+        public void WriteLog(OrderModel Order,LogChangeTypesEnum changeType,int employeeId)
         {
+
             var log = new OrderLogEntriesModel()
             {
                 OrderId = Order.Id,
-                EmplId = LoginItem.EmployeeId,
+                EmplId = employeeId,
                 ChangeType = changeType,
                 ChangeDateTime = DateTime.Now
             };

@@ -23,9 +23,12 @@ namespace AWO_Orders.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public void OnGet(Exception ex)
         {
+            LastException = ex;
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
         }
+
+        public Exception  LastException { get; set; }
     }
 }

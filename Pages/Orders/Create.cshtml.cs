@@ -51,7 +51,7 @@ namespace AWO_Orders.Pages.Orders
             }
 
             SetBaseProbertiesOnPost(OrderModel);
-            OrderModel.EmplId = LoginItem.EmployeeId;
+            OrderModel.EmplId = SessionLoginItem.EmployeeId;
 
             _context.Orders.Add(OrderModel);
             await _context.SaveChangesAsync();
@@ -63,9 +63,9 @@ namespace AWO_Orders.Pages.Orders
             await _context.SaveChangesAsync();
 
             var options = new DbContextOptionsBuilder<OrderLogEntriesContext>();
-            options.UseSqlServer(LoginItem.ConnectionString);
+            options.UseSqlServer(SessionLoginItem.ConnectionString);
             var logContext = new OrderLogEntriesContext(options.Options);
-            logContext.WriteLog(orderModel, LogChangeTypesEnum.CreateOrder);
+            logContext.WriteLog(orderModel, LogChangeTypesEnum.CreateOrder,SessionLoginItem.EmployeeId);
 
             return RedirectToPage("/OrderPositions/Index",OrderModel.Id);
         }

@@ -10,7 +10,7 @@
     <h4>Auftrag: @Model.Order.Number </h4>
 </p>
 <p>
-    @if (LoginItem.Right.CanOrder || LoginItem.Right.CanProcess)
+    @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess)
     {
         <a asp-page="Create" asp-route-id="@Model.Order.Id"><img alt="Neu" src="Images\hinzufuegen32.png" /></a>
     }
@@ -46,7 +46,7 @@
 @foreach (var item in Model.OrderPosition) {
         <tr>
             <td>
-                @if (LoginItem.Right.CanOrder || LoginItem.Right.CanProcess)
+                @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess)
                 {
                     <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
                     <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>

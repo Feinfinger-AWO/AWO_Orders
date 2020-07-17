@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AWO_Orders.Pages.Orders
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly AWO_Orders.Data.OrdersContext _context;
         private string filterText;

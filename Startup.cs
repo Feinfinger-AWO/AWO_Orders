@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Threading;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Http;
 
 namespace AWO_Orders
 {
@@ -39,6 +40,15 @@ namespace AWO_Orders
             builder.Authentication = SqlAuthenticationMethod.SqlPassword;
 
             services.AddRazorPages();
+
+            services.AddHttpContextAccessor();
+
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddDbContext<LocationContext>(options =>
             {
                 options.UseSqlServer(builder.ConnectionString);
@@ -58,8 +68,8 @@ namespace AWO_Orders
             services.AddDbContext<ArticleTypeContext>(options =>
                     options.UseSqlServer(builder.ConnectionString));
 
-            LoginItem.ConnectionString = builder.ConnectionString;
-
+            Startup.ConnectionString = builder.ConnectionString;
+           
             services.AddDbContext<OrderStatusContext>(options =>
                     options.UseSqlServer(builder.ConnectionString));
 
@@ -91,15 +101,6 @@ namespace AWO_Orders
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
-
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -108,11 +109,17 @@ namespace AWO_Orders
             app.UseRequestLocalization(localizationOptions);
 
             app.UseAuthorization();
+            
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
+
+         
         }
+
+        public static string ConnectionString { get; set; }
     }
 }
