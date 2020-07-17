@@ -14,9 +14,16 @@ namespace AWO_Orders.Pages.OrderPositions
     {
         private readonly AWO_Orders.Data.OrderPositionContext _context;
 
-        private void ReorderPositions()
+        private void ReorderPositions(int orderId)
         {
-            //todo
+            var positions = from s in _context.OrderPositions where s.OrderId == orderId orderby s.Number select s;
+            int n = 1;
+
+            foreach(var position in positions)
+            {
+                position.Number = n;
+                n = n + 1;
+            }
         }
 
         public DeleteModel(AWO_Orders.Data.OrderPositionContext context)
@@ -58,7 +65,8 @@ namespace AWO_Orders.Pages.OrderPositions
             {
                 _context.OrderPositions.Remove(OrderPosition);
                 await _context.SaveChangesAsync();
-                ReorderPositions();
+                ReorderPositions(OrderPosition.OrderId);
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToPage("./Index", new { id = OrderPosition.OrderId });
