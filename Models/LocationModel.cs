@@ -26,6 +26,10 @@ namespace AWO_Orders.Models
         [DisplayName("Postleitzahl")]
         public string PLZ { get; set; }
 
+        [DisplayName("Gebiet")]
+        public string Area { get; set; }
 
+        [DisplayName("Kostenstelle")]
+        public string CostCenter { get; set; }
     }
 }

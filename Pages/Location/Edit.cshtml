@@ -35,6 +35,16 @@
                 <span asp-validation-for="LocationModel.PLZ" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="LocationModel.Area" class="control-label"></label>
+                <input asp-for="LocationModel.Area" class="form-control" />
+                <span asp-validation-for="LocationModel.Area" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationModel.CostCenter" class="control-label"></label>
+                <input asp-for="LocationModel.CostCenter" class="form-control" />
+                <span asp-validation-for="LocationModel.CostCenter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
