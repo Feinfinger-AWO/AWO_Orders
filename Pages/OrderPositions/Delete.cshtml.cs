@@ -10,7 +10,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.OrderPositions
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BasePageModel
     {
         private readonly AWO_Orders.Data.OrderPositionContext _context;
 
@@ -67,6 +67,7 @@ namespace AWO_Orders.Pages.OrderPositions
                 await _context.SaveChangesAsync();
                 ReorderPositions(OrderPosition.OrderId);
                 await _context.SaveChangesAsync();
+                await WriteLog(OrderPosition.OrderId, LogChangeTypesEnum.RemovePosition, OrderPosition.Id);
             }
 
             return RedirectToPage("./Index", new { id = OrderPosition.OrderId });

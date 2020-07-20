@@ -60,7 +60,7 @@ namespace AWO_Orders.Pages.OrderPositions
 
             _context.OrderPositions.Add(OrderPosition);
             await _context.SaveChangesAsync();
-
+            await WriteLog(OrderPosition.OrderId, LogChangeTypesEnum.AddPosition, OrderPosition.Id);
             return RedirectToPage("./Index", new { id = OrderPosition.OrderId });
         }
 

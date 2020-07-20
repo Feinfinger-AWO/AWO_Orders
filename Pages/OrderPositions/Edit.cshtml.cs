@@ -63,6 +63,7 @@ namespace AWO_Orders.Pages.OrderPositions
             try
             {
                 await _context.SaveChangesAsync();
+                await WriteLog(OrderPosition.OrderId, LogChangeTypesEnum.EditPosition, OrderPosition.Id);
             }
             catch (DbUpdateConcurrencyException)
             {

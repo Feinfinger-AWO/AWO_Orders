@@ -10,7 +10,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.Orders
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BasePageModel
     {
         private readonly AWO_Orders.Data.OrdersContext _context;
 
@@ -55,12 +55,15 @@ namespace AWO_Orders.Pages.Orders
                 if (status.BaseStatus ==  OrderBaseStatusEnum.Open)
                 {
                     _context.Orders.Remove(OrderModel);
+                    await WriteLog(OrderModel.Id, LogChangeTypesEnum.DeleteOrder, null);
                 }
                 else
                 {
                     OrderModel.StatusId = _context.OrderStatus.SingleOrDefault(s => s.BaseStatus == OrderBaseStatusEnum.Canceled).Id;
+                    await WriteLog(OrderModel.Id, LogChangeTypesEnum.EditOrder, null);
                 }
 
+              
                 await _context.SaveChangesAsync();
             }
 

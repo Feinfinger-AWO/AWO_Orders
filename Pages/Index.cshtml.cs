@@ -85,7 +85,6 @@ namespace AWO_Orders.Pages
                 }
             }catch(Exception e)
             {
-               
                 RedirectToPage("/Error",new {ex = e });
             }
         }

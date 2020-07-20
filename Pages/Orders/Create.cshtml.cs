@@ -64,14 +64,11 @@ namespace AWO_Orders.Pages.Orders
 
                 await _context.SaveChangesAsync();
 
-                var options = new DbContextOptionsBuilder<OrderLogEntriesContext>();
-                options.UseSqlServer(SessionLoginItem.ConnectionString);
-                var logContext = new OrderLogEntriesContext(options.Options);
-                logContext.WriteLog(orderModel, LogChangeTypesEnum.CreateOrder, SessionLoginItem.EmployeeId);
+                await WriteLog(orderModel.Id, LogChangeTypesEnum.CreateOrder, null);
             }
             catch (Exception e)
             {
-                //todo
+                RedirectToPage("/Error", new { ex = e });
             }
 
             return RedirectToPage("/OrderPositions/Index",new { id = OrderModel.Id });

@@ -59,6 +59,7 @@ namespace AWO_Orders.Pages.Orders
             try
             {
                 await _context.SaveChangesAsync();
+                await WriteLog(OrderModel.Id, LogChangeTypesEnum.EditOrder, null);
             }
             catch (DbUpdateConcurrencyException)
             {

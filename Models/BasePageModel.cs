@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AWO_Orders.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,10 @@ namespace AWO_Orders.Models
             Model.ChangedBy = SessionLoginItem.EmployeeId;
         }
 
+        /// <summary>
+        /// Login Daten werden der Session entnommen
+        /// </summary>
+        /// <returns></returns>
         public LoginItem GetLogin()
         {
             if (HttpContext.Session != null && HttpContext.Session.Keys.Contains("Login"))
@@ -33,24 +39,45 @@ namespace AWO_Orders.Models
             return new LoginItem() { EmployeeId = 0 };
         }
 
+        /// <summary>
+        /// Login Daten werden in die Session geschrieben
+        /// </summary>
+        /// <param name="item"></param>
         protected void SetLogin(LoginItem item)
         {
             loginItem = item;
             HttpContext.Session.SetString("Login", JsonConvert.SerializeObject(item));
         }
 
+        /// <summary>
+        /// Login Daten werden aus der Session gelöscht
+        /// </summary>
         protected void Logout()
         {
             HttpContext.Session.Clear();
         }
 
-        public LoginItem SessionLoginItem 
-        { 
-            get 
+        /// <summary>
+        /// Veränderungen an den Bestelungen werden mit gelogt
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="typ"></param>
+        /// <param name="positionId"></param>
+        public async Task WriteLog(int orderId, LogChangeTypesEnum typ,int? positionId)
+        {
+            var options = new DbContextOptionsBuilder<OrderLogEntriesContext>();
+            options.UseSqlServer(SessionLoginItem.ConnectionString);
+            var logContext = new OrderLogEntriesContext(options.Options);
+            await logContext.WriteLog(orderId, typ, SessionLoginItem.EmployeeId,positionId);
+        }
+
+        public LoginItem SessionLoginItem
+        {
+            get
             {
                 if (loginItem == null) loginItem = GetLogin();
                 return loginItem;
-            } 
+            }
         }
     }
 }

@@ -20,19 +20,20 @@ namespace AWO_Orders.Data
         /// </summary>
         /// <param name="Order"></param>
         /// <param name="changeType"></param>
-        public void WriteLog(OrderModel Order,LogChangeTypesEnum changeType,int employeeId)
+        public async Task WriteLog(int OrderId, LogChangeTypesEnum changeType,int employeeId,int? PosId)
         {
 
             var log = new OrderLogEntriesModel()
             {
-                OrderId = Order.Id,
+                OrderId = OrderId,
                 EmplId = employeeId,
                 ChangeType = changeType,
-                ChangeDateTime = DateTime.Now
+                ChangeDateTime = DateTime.Now,
+                OrderPositionId = (PosId.HasValue)?PosId.Value : -1
             };
 
             OrderLogEntries.Add(log);
-            SaveChanges();
+            await SaveChangesAsync();
         }
 
         public DbSet<AWO_Orders.Models.OrderLogEntriesModel> OrderLogEntries { get; set; }
