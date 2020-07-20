@@ -45,29 +45,36 @@ namespace AWO_Orders.Pages.Orders
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return Page();
+                if (!ModelState.IsValid)
+                {
+                    return Page();
+                }
+
+                SetBaseProbertiesOnPost(OrderModel);
+                OrderModel.EmplId = SessionLoginItem.EmployeeId;
+
+                _context.Orders.Add(OrderModel);
+                await _context.SaveChangesAsync();
+
+                _context.Update(OrderModel);
+
+                orderModel.Number = DateTime.Now.Year.ToString() + orderModel.Id.ToString("000000");
+
+                await _context.SaveChangesAsync();
+
+                var options = new DbContextOptionsBuilder<OrderLogEntriesContext>();
+                options.UseSqlServer(SessionLoginItem.ConnectionString);
+                var logContext = new OrderLogEntriesContext(options.Options);
+                logContext.WriteLog(orderModel, LogChangeTypesEnum.CreateOrder, SessionLoginItem.EmployeeId);
+            }
+            catch (Exception e)
+            {
+                //todo
             }
 
-            SetBaseProbertiesOnPost(OrderModel);
-            OrderModel.EmplId = SessionLoginItem.EmployeeId;
-
-            _context.Orders.Add(OrderModel);
-            await _context.SaveChangesAsync();
-
-            _context.Update(OrderModel);
-
-            orderModel.Number = DateTime.Now.Year.ToString() + orderModel.Id.ToString("000000");
-
-            await _context.SaveChangesAsync();
-
-            var options = new DbContextOptionsBuilder<OrderLogEntriesContext>();
-            options.UseSqlServer(SessionLoginItem.ConnectionString);
-            var logContext = new OrderLogEntriesContext(options.Options);
-            logContext.WriteLog(orderModel, LogChangeTypesEnum.CreateOrder,SessionLoginItem.EmployeeId);
-
-            return RedirectToPage("/OrderPositions/Index",OrderModel.Id);
+            return RedirectToPage("/OrderPositions/Index",new { id = OrderModel.Id });
         }
 
         
