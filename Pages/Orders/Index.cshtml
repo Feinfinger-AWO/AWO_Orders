@@ -10,7 +10,7 @@
 <p>
     @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess)
     {
-    <a asp-page="Create"><img alt="Neu" src="Images\hinzufuegen32.png" /></a>
+    <a asp-page="Create"><img alt="Neu" src="\Images\hinzufuegen32.png" /></a>
     }
 </p>
 <form asp-page="./Index" method="get">
@@ -56,13 +56,13 @@
             <td>
                 @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess) 
                 { 
-                    <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
-                    <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>
+                    <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="\Images\bearbeiten32.png" /></a>
+                    <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="\Images\loeschen32.png" /></a>
                 }
 
                 @if (Model.SessionLoginItem.Right.CanView)
                 {
-                    <a asp-page="/OrderPositions/Index" asp-route-id="@item.Id"><img alt="Details" src="Images\detailansicht32.png" /></a>
+                    <a asp-page="/OrderPositions/Index" asp-route-id="@item.Id"><img alt="Details" src="\Images\detailansicht32.png" /></a>
                 }
             </td>
             <td>

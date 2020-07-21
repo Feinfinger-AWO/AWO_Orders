@@ -24,6 +24,7 @@ namespace AWO_Orders.Pages.Orders
 
         public async Task OnGetAsync(string searchString, int? filterStatusId)
         {
+
             FilterStatusId = filterStatusId?? 1;
             FilterText = searchString;
 

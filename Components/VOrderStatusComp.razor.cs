@@ -18,6 +18,11 @@ namespace AWO_Orders.Components
     public partial class VOrderStatusComp : ComponentBase
     {
 
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+        }
+
         public IList<V_Order_StatusModel> Models 
         { 
             get 
@@ -26,7 +31,5 @@ namespace AWO_Orders.Components
             } 
         }
 
-        [Parameter]
-        public VOrderStatusContext context { get; set; }
     }
 }

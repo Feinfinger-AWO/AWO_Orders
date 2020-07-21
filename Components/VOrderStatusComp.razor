@@ -1,6 +1,10 @@
-﻿@page "/V_Order_StatusModel"
+﻿@page "/"
+@page "/Orders/Index"
 <b>Übersicht Bestellungen</b>
 <table width="250">
+    @inject AWO_Orders.Data.VOrderStatusContext context
+    @inject NavigationManager NavigationManager
+
     @foreach (var item in Models)
     {
         <tr>
@@ -10,10 +14,16 @@
             <td>
                 <label class="control-label">@item.Status</label>
             </td>
+            <td>
+                <a href="/Orders/Index?filterStatusId =@item.Id">
+                    <img alt="weiter" src="Images\eingekreist.png" />
+                </a>
+
+            </td>
         </tr>
     }
 </table>
 
-@code {
+@code{
 
 }
