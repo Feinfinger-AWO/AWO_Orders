@@ -18,6 +18,7 @@ using System.Threading;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AWO_Orders
 {
@@ -38,6 +39,8 @@ namespace AWO_Orders
             builder.Password = "admin";
             builder.UserID = "awo";
             builder.Authentication = SqlAuthenticationMethod.SqlPassword;
+
+            services.AddControllersWithViews();
 
             services.AddRazorPages();
 
@@ -96,11 +99,23 @@ namespace AWO_Orders
                 options.SupportedUICultures = supportedCultures;
             });
 
+            services.AddDbContext<VOrderStatusContext>(options =>
+                    options.UseSqlServer(builder.ConnectionString));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -116,8 +131,6 @@ namespace AWO_Orders
             {
                 endpoints.MapRazorPages();
             });
-
-         
         }
 
         public static string ConnectionString { get; set; }

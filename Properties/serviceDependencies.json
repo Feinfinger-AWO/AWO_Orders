@@ -31,6 +31,10 @@
     "mssql8": {
       "type": "mssql",
       "connectionId": "OrderPositionContext"
+    },
+    "mssql9": {
+      "type": "mssql",
+      "connectionId": "VOrderStatusContext"
     }
   }
 }

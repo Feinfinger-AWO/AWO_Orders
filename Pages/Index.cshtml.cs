@@ -12,6 +12,7 @@ using System.IO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using AWO_Orders.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AWO_Orders.Pages
 {
@@ -19,9 +20,10 @@ namespace AWO_Orders.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger,VOrderStatusContext vcontext)
         {
-            _logger = logger;
+            InitialValue = vcontext;
+             _logger = logger;
         }
 
         public void OnGet(int? exit)
@@ -97,5 +99,7 @@ namespace AWO_Orders.Pages
         public string Name { get; set; }
 
         public string Password { get; set; }
+
+        public AWO_Orders.Data.VOrderStatusContext InitialValue { get; set; }
     }
 }

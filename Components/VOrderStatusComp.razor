@@ -1,0 +1,19 @@
+﻿@page "/V_Order_StatusModel"
+<b>Übersicht Bestellungen</b>
+<table width="250">
+    @foreach (var item in Models)
+    {
+        <tr>
+            <td>
+                <label class="control-label">@item.Count</label>
+            </td>
+            <td>
+                <label class="control-label">@item.Status</label>
+            </td>
+        </tr>
+    }
+</table>
+
+@code {
+
+}
