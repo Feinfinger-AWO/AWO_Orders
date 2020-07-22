@@ -32,6 +32,14 @@
 }
 else
 {
-    <component type="typeof(AWO_Orders.Components.VOrderStatusComp)" render-mode="ServerPrerendered" />
 
+
+    if (Model.SessionLoginItem.Right.CanProcess)
+    {
+        <component type="typeof(AWO_Orders.Components.VOrderStatusComp)" render-mode="ServerPrerendered" />
+    }
+    else
+    {
+        <component type="typeof(AWO_Orders.Components.VOrderStatusEmplComp)" EmployeeId = "@Model.SessionLoginItem.EmployeeId"  render-mode="ServerPrerendered" />
+    }
 }

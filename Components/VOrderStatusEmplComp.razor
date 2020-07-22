@@ -1,0 +1,47 @@
+﻿@page "/"
+@page "/Orders/Index"
+<b>Übersicht Bestellungen</b>
+<table width="250">
+    @using AWO_Orders.Models
+    @using Microsoft.EntityFrameworkCore
+    @inject AWO_Orders.Data.VOrderStatusEmplContext context
+
+    @foreach (var item in Models)
+    {
+    <tr>
+        <td>
+            <label class="control-label">@item.Count</label>
+        </td>
+        <td>
+            <label class="control-label">@item.Status</label>
+        </td>
+        <td>
+            <label class="control-label">@item.Empl.SureName</label>
+        </td>
+        <td>
+            <a href="/Orders/Index?filterStatusId=@item.Id">
+                <img alt="weiter" src="Images\eingekreist.png" />
+            </a>
+
+        </td>
+    </tr>
+    }
+</table>
+
+@code{
+
+    [Parameter]
+    public int? EmployeeId { get; set; }
+
+    public IList<V_Order_Status_EmplModel> Models
+    {
+        get
+        {
+            var orders = (EmployeeId.HasValue)?
+                from s in context.V_Order_Status_Empl where s.EmplId == EmployeeId.Value select s:
+                 from s in context.V_Order_Status_Empl orderby s.EmplId select s;
+            
+            return orders.Include(o => o.Empl).ToList();
+        }
+    }
+}

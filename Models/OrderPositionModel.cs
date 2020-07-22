@@ -32,5 +32,8 @@ namespace AWO_Orders.Models
 
         [DisplayName("Nummer")]
         public int Number { get; set; }
+
+        [DisplayName("Status")]
+        public PositionStatusEnum Status { get; set; }
     }
 }

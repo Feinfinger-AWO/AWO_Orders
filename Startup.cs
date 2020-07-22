@@ -101,6 +101,9 @@ namespace AWO_Orders
 
             services.AddDbContext<VOrderStatusContext>(options =>
                     options.UseSqlServer(builder.ConnectionString));
+
+            services.AddDbContext<VOrderStatusEmplContext>(options =>
+                    options.UseSqlServer(builder.ConnectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

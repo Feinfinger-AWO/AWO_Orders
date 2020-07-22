@@ -24,11 +24,14 @@ namespace AWO_Orders.Pages.Orders
 
         public async Task OnGetAsync(string searchString, int? filterStatusId)
         {
-
+            var loginItem = GetLogin();
+                
             FilterStatusId = filterStatusId?? 1;
             FilterText = searchString;
 
-            var orders = from s in _context.Orders where s.StatusId == FilterStatusId select s;
+            var orders = (loginItem.Right.CanProcess) ?
+                    from s in _context.Orders where s.StatusId == FilterStatusId select s :
+                      from s in _context.Orders where s.StatusId == FilterStatusId && s.EmplId == loginItem.EmployeeId select s;
 
             OrderModel = await orders
                 .Include(o => o.Employee)
