@@ -57,22 +57,26 @@
                                     <div class="dropdown-content">
 
                                         <a class="nav-link text-dark" asp-area="" asp-page="/Orders/Index">Übersicht</a>
-
+                                        @if (loginItem.Right != null && loginItem.Right.CanProcess)
+                                        {
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/OpenOrders/Index">Abarbeitung</a>
+                                        }
                                     </div>
+
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <div class="dropdown">
-                                    <button class="dropbtn">Funktionen</button>
-                                    <div class="dropdown-content">
 
-                                        <a class="nav-link text-dark" asp-area="" asp-route-exit="1" asp-page="/Index">Logout</a>
-
-                                    </div>
-                                </div>
-                            </li>
                         }
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <button class="dropbtn">Funktionen</button>
+                                <div class="dropdown-content">
 
+                                    <a class="nav-link text-dark" asp-area="" asp-route-exit="1" asp-page="/Index">Logout</a>
+
+                                </div>
+                            </div>
+                        </li>
 </div>
             </div>
         </nav>

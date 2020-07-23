@@ -2,6 +2,8 @@
 @page "/Orders/Index"
 <b>Übersicht Bestellungen</b>
 <table width="250">
+    @using AWO_Orders.Models
+    @using Microsoft.EntityFrameworkCore
     @inject AWO_Orders.Data.VOrderStatusContext context
 
     @foreach (var item in Models)
@@ -24,5 +26,11 @@
 </table>
 
 @code{
-
+    public IList<V_Order_StatusModel> Models
+    {
+        get
+        {
+            return context.V_Order_Status.ToList();
+        }
+    }
 }

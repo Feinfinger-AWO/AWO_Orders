@@ -35,6 +35,10 @@
     "mssql9": {
       "type": "mssql.local",
       "connectionId": "VOrderStatusContext"
+    },
+    "mssql10": {
+      "type": "mssql.local",
+      "connectionId": "OpenOrdersContext"
     }
   }
 }

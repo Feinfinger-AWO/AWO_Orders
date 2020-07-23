@@ -1,0 +1,96 @@
+﻿@page
+@model AWO_Orders.Pages.OpenOrders.OpenOrdersModel
+
+@{
+    ViewData["Title"] = "OpenOrders";
+}
+
+<h1>Offene Bestellungen</h1>
+<form method="post">
+    <p>
+        <input type="submit" value="Bestellen" class="btn btn-primary" />
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Selected)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Rejected)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].PlaceDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Number)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Employee)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].PosNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Count)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].ArticleNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].ArticleType)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for(int n=0;n< Model.V_OrdersModel.Count;n++)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" name="[@n].Id" asp-for="@Model.V_OrdersModel[n].Id" />
+                        <input type="hidden" name="[@n].PosId" asp-for="@Model.V_OrdersModel[n].PosId" />
+                        <input class="form-check-input" name="[@n].Selected" asp-for="@Model.V_OrdersModel[n].Selected" />
+                    </td>
+                    <td>
+                        <input class="form-check-input" name="[@n].Rejected" asp-for="@Model.V_OrdersModel[n].Rejected" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].PlaceDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].Employee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].PosNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].ArticleNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.V_OrdersModel[n].ArticleType)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
