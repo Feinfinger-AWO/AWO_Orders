@@ -59,7 +59,8 @@
                                         <a class="nav-link text-dark" asp-area="" asp-page="/Orders/Index">Übersicht</a>
                                         @if (loginItem.Right != null && loginItem.Right.CanProcess)
                                         {
-                                        <a class="nav-link text-dark" asp-area="" asp-page="/OpenOrders/Index">Abarbeitung</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-page="/OpenOrders/Index">Abarbeitung</a>
+                                            <a class="nav-link text-dark" asp-area="" asp-page="/ExternalOrders/Index">Externe Bestellungen</a>
                                         }
                                     </div>
 

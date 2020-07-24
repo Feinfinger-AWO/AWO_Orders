@@ -1,0 +1,61 @@
+﻿@page
+@model AWO_Orders.Pages.ExternalOrders.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Externe Bestellungen</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExternalOrderModel[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExternalOrderModel[0].Manager)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExternalOrderModel[0].ProcessedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExternalOrderModel[0].Notes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExternalOrderModel[0].Changed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExternalOrderModel[0].ChangedBy)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ExternalOrderModel) {
+        <tr>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Id"><img alt="Details" src="\Images\detailansicht32.png" /></a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manager.SureName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProcessedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Changed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.SureName)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

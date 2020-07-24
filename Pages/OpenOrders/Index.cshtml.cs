@@ -7,20 +7,26 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AWO_Orders.Data;
 using AWO_Orders.Models;
+using Microsoft.Data.SqlClient;
 
 namespace AWO_Orders.Pages.OpenOrders
 {
-    public class OpenOrdersModel : PageModel
+    public class OpenOrdersModel : BasePageModel
     {
         private readonly AWO_Orders.Data.OpenOrdersContext _context;
         private readonly OrdersContext _orderContext;
         private readonly OrderPositionContext _orderPositionContext;
+        private readonly ExternalOrdersContext _externalOrdersContext;
 
-        public OpenOrdersModel(AWO_Orders.Data.OpenOrdersContext context, AWO_Orders.Data.OrdersContext orderContext, OrderPositionContext orderPositionContext)
+        public OpenOrdersModel(AWO_Orders.Data.OpenOrdersContext context,
+            AWO_Orders.Data.OrdersContext orderContext,
+            ExternalOrdersContext externalOrdersContext,
+            OrderPositionContext orderPositionContext)
         {
             _context = context;
             _orderContext = orderContext;
             _orderPositionContext = orderPositionContext;
+            _externalOrdersContext = externalOrdersContext;
         }
 
         [BindProperty]
@@ -40,30 +46,58 @@ namespace AWO_Orders.Pages.OpenOrders
 
         public async void OnPostAsync(IList<V_OrdersModel> items)
         {
-            await SetPositionStatus(items);
-            await RefreshOrderStatus(items);
+
+            var connection = _externalOrdersContext.Database.GetDbConnection();
+            connection.Open();
+            var cmd = connection.CreateCommand();
+            cmd.CommandText = "SELECT NEXT VALUE FOR SequenzExternOrders";
+            var externId = cmd.ExecuteScalar();
+
+            var externalOrder = new ExternalOrderModel()
+            {
+                Id = (long)externId,
+                ManagerId = SessionLoginItem.EmployeeId,
+                ProcessedAt = DateTime.Now,
+                Changed = DateTime.Now,
+                ChangedBy = SessionLoginItem.EmployeeId
+            };
+
+            _externalOrdersContext.Add(externalOrder);
+            await _externalOrdersContext.SaveChangesAsync();
+
+            await SetPositionStatus(items, (long)externId);     
         }
 
-        private async Task SetPositionStatus(IList<V_OrdersModel> items)
+        private async Task SetPositionStatus(IList<V_OrdersModel> items, long externId)
         {
+            var changedOrders = new List<int>();
             foreach(var item in items)
             {
-                var position = (from s in _orderPositionContext.OrderPositions where s.Id == item.PosId select s).Single();
-                if (item.Selected)
+                if (item.Selected || item.Rejected)
                 {
-                    position.Status = PositionStatusEnum.Ordered;
-                }
-                if (item.Rejected)
-                {
-                    position.Status = PositionStatusEnum.Rejected;
+                    var position = (from s in _orderPositionContext.OrderPositions where s.Id == item.PosId select s).Single();
+                    if (item.Selected)
+                    {
+                        position.Status = PositionStatusEnum.Ordered;
+                    }
+                    if (item.Rejected)
+                    {
+                        position.Status = PositionStatusEnum.Rejected;
+                    }
+                    position.ExternId = externId;
+                    
+                    if(!changedOrders.Contains(position.OrderId))
+                        changedOrders.Add(position.OrderId);
                 }
             }
             await _orderPositionContext.SaveChangesAsync();
+            if(changedOrders.Any())
+                await RefreshOrderStatus(changedOrders);
         }
 
-        private async Task RefreshOrderStatus(IList<V_OrdersModel> items)
+        private async Task RefreshOrderStatus(IList<int> Ids)
         {
-            foreach(var id in items.Select(a => a.Id))
+            foreach(var id in Ids)
             {
                 var order = (from o in _orderContext.Orders where o.Id == id select o).First();
                 var Pos = from p in _orderPositionContext.OrderPositions where p.OrderId == id && p.Status == PositionStatusEnum.Open select p;

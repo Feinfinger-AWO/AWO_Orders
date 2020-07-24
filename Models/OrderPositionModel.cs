@@ -35,5 +35,7 @@ namespace AWO_Orders.Models
 
         [DisplayName("Status")]
         public PositionStatusEnum Status { get; set; }
+
+        public long? ExternId { get; set; }
     }
 }
