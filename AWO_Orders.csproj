@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <None Include="wwwroot\Images\bearbeiten32.png" />
+    <None Include="wwwroot\Rotativa\wkhtmltopdf.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +21,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Wkhtmltopdf.NetCore" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wkhtmltopdf\Debian\" />
+    <Folder Include="wkhtmltopdf\CentOs\" />
+    <Folder Include="wkhtmltopdf\Ubuntu\" />
+    <Folder Include="wkhtmltopdf\Windows\" />
   </ItemGroup>
 
 </Project>

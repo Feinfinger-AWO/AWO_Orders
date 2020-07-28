@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AWO_Orders.Data;
 using AWO_Orders.Models;
 using Microsoft.Data.SqlClient;
+using Wkhtmltopdf.NetCore;
+using System.IO;
 
 namespace AWO_Orders.Pages.OpenOrders
 {
@@ -44,7 +46,7 @@ namespace AWO_Orders.Pages.OpenOrders
             V_OrdersModel = await models.ToListAsync();
         }
 
-        public async void OnPostAsync(IList<V_OrdersModel> items)
+        public async Task<IActionResult> OnPostAsync(IList<V_OrdersModel> items)
         {
 
             var connection = _externalOrdersContext.Database.GetDbConnection();
@@ -65,7 +67,8 @@ namespace AWO_Orders.Pages.OpenOrders
             _externalOrdersContext.Add(externalOrder);
             await _externalOrdersContext.SaveChangesAsync();
 
-            await SetPositionStatus(items, (long)externId);     
+            await SetPositionStatus(items, (long)externId);
+            return RedirectToPage("/ExternalOrders/Details", new { id = externId });
         }
 
         private async Task SetPositionStatus(IList<V_OrdersModel> items, long externId)

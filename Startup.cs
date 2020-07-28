@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Wkhtmltopdf.NetCore;
+using Rotativa.AspNetCore;
 
 namespace AWO_Orders
 {
@@ -110,6 +112,8 @@ namespace AWO_Orders
 
             services.AddDbContext<ExternalOrdersContext>(options =>
                     options.UseSqlServer(builder.ConnectionString));
+
+           // services.AddWkhtmltopdf("wkhtmltopdf");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -139,6 +143,9 @@ namespace AWO_Orders
             {
                 endpoints.MapRazorPages();
             });
+
+            RotativaConfiguration.Setup((Microsoft.AspNetCore.Hosting.IHostingEnvironment)env);
+          
         }
 
         public static string ConnectionString { get; set; }
