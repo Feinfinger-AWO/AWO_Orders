@@ -33,7 +33,7 @@
                     <label asp-for="ExternalOrderModel.Notes" class="control-label"></label>:<br />
                     @if (!Model.Print)
                     {
-                        <textarea rows="5" style="width:600px" id="notes" name="notes"></textarea>
+                <textarea rows="5" style="width:600px" id="notes" name="notes">@Model.ExternalOrderModel.Notes</textarea>
                     }
                     else
                     {

@@ -48,27 +48,38 @@ namespace AWO_Orders.Pages.OpenOrders
 
         public async Task<IActionResult> OnPostAsync(IList<V_OrdersModel> items)
         {
+            var createExtern = items.Where(i => i.Selected == true).Any();
 
-            var connection = _externalOrdersContext.Database.GetDbConnection();
-            connection.Open();
-            var cmd = connection.CreateCommand();
-            cmd.CommandText = "SELECT NEXT VALUE FOR SequenzExternOrders";
-            var externId = cmd.ExecuteScalar();
-
-            var externalOrder = new ExternalOrderModel()
+            if (createExtern)
             {
-                Id = (long)externId,
-                ManagerId = SessionLoginItem.EmployeeId,
-                ProcessedAt = DateTime.Now,
-                Changed = DateTime.Now,
-                ChangedBy = SessionLoginItem.EmployeeId
-            };
+                var connection = _externalOrdersContext.Database.GetDbConnection();
+                connection.Open();
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = "SELECT NEXT VALUE FOR SequenzExternOrders";
+                var externId = cmd.ExecuteScalar();
 
-            _externalOrdersContext.Add(externalOrder);
-            await _externalOrdersContext.SaveChangesAsync();
+                var externalOrder = new ExternalOrderModel()
+                {
+                    Id = (long)externId,
+                    ManagerId = SessionLoginItem.EmployeeId,
+                    ProcessedAt = DateTime.Now,
+                    Changed = DateTime.Now,
+                    ChangedBy = SessionLoginItem.EmployeeId
+                };
 
-            await SetPositionStatus(items, (long)externId);
-            return RedirectToPage("/ExternalOrders/Details", new { id = externId });
+                _externalOrdersContext.Add(externalOrder);
+                await _externalOrdersContext.SaveChangesAsync();
+
+                await SetPositionStatus(items, (long)externId);
+                return RedirectToPage("/ExternalOrders/Details", new { id = externId });
+            }
+            else
+            {
+                //todo: Rückmeldung das status gesetzt wurde
+                await SetPositionStatus(items, -1);
+                return RedirectToPage("/Index");
+            }
+     
         }
 
         private async Task SetPositionStatus(IList<V_OrdersModel> items, long externId)
@@ -82,13 +93,13 @@ namespace AWO_Orders.Pages.OpenOrders
                     if (item.Selected)
                     {
                         position.Status = PositionStatusEnum.Ordered;
+                        position.ExternId = externId;
                     }
                     if (item.Rejected)
                     {
                         position.Status = PositionStatusEnum.Rejected;
                     }
-                    position.ExternId = externId;
-                    
+                
                     if(!changedOrders.Contains(position.OrderId))
                         changedOrders.Add(position.OrderId);
                 }

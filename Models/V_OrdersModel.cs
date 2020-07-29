@@ -39,6 +39,14 @@ namespace AWO_Orders.Models
         [DisplayName("BaseStatus")]
         public OrderBaseStatusEnum BaseStatus { get; set; }
 
+        public int LocId { get; set; }
+        [DisplayName("Niederlassung")]
+        public string Location { get; set; }
+        [DisplayName("Gebiet")]
+        public string Area { get; set; }
+        [DisplayName("Kostenstelle")]
+        public string CostCenter { get; set; }
+
         [NotMapped]
         [DisplayName("Ausgewählt")]
         public bool Selected { get; set; }
