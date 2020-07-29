@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+@inject AWO_Orders.Data.LocationContext locContext
 <h1>Externe Bestellung #@Model.ExternalOrderModel.Id</h1>
 <form method="post" asp-page-handler="PDF">
     <div>
@@ -33,7 +33,7 @@
                     <label asp-for="ExternalOrderModel.Notes" class="control-label"></label>:<br />
                     @if (!Model.Print)
                     {
-                <textarea rows="5" style="width:600px" id="notes" name="notes">@Model.ExternalOrderModel.Notes</textarea>
+                        <textarea rows="5" style="width:600px" id="notes" name="notes">@Model.ExternalOrderModel.Notes</textarea>
                     }
                     else
                     {
@@ -49,54 +49,74 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>
+                            <th align="left">
                                 @Html.DisplayNameFor(model => model.OrderPosition[0].Number)
                             </th>
-                            <th>
+                            <th align="left">
                                 @Html.DisplayNameFor(model => model.OrderPosition[0].Description)
                             </th>
-                            <th>
+                            <th align="left">
                                 @Html.DisplayNameFor(model => model.OrderPosition[0].ArticleNumber)
                             </th>
-                            <th>
+                            <th align="left">
                                 @Html.DisplayNameFor(model => model.OrderPosition[0].Count)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.OrderPosition[0].Order)
+                            <th align="left">
+                                Auftrag
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.OrderPosition[0].ArticleType)
+                            <th align="left">
+                                Artikelart
+                            </th>
+                            <th align="left">
+                                Mitarbeiter
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.OrderPosition)
+                        @foreach (var group in Model.OrderPosition.GroupBy(x => x.Employee.LocationId))
                         {
+
+                            var location = locContext.Locations.SingleOrDefault(l => l.Id == group.First().Employee.LocationId);
+                            var groupName = "Niederlassung: " + location.Ident + "  -  Gebiet: " + location.Area + "  -  Kostenstelle: " + location.CostCenter;
+
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Number)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ArticleNumber)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Count)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Order.Number)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ArticleType.Ident)
+                                <td colspan="11">
+                                    <b>
+                                        @groupName
+                                    </b>
                                 </td>
                             </tr>
+                            @foreach (var item in group)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Number)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArticleNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Count)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Order.Number)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArticleType.Ident)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Order.Empl.SureName)
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
-                </dd>
-            </dl>
+            </dd>
+        </dl>
     </div>
     @if (!Model.Print)
     {

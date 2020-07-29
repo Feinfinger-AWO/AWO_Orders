@@ -49,6 +49,7 @@
             </tr>
         </thead>
         <tbody>
+            @{int count = 0; }
             @foreach (var group in Model.V_OrdersModel.GroupBy(x => x.Location))
             {
                 var groupName = "Niederlassung: " + group.Key + "  -  Gebiet: " + group.First().Area + "  -  Kostenstelle: " + group.First().CostCenter;
@@ -64,12 +65,12 @@
                 {
                     <tr>
                         <td>
-                            <input type="hidden" name="[@n].Id" asp-for="@group.ElementAt(n).Id" />
-                            <input type="hidden" name="[@n].PosId" asp-for="@group.ElementAt(n).PosId" />
-                            <input class="form-check-input" name="[@n].Selected" asp-for="@group.ElementAt(n).Selected" />
+                            <input type="hidden" name="[@count].Id" asp-for="@group.ElementAt(n).Id" />
+                            <input type="hidden" name="[@count].PosId" asp-for="@group.ElementAt(n).PosId" />
+                            <input class="form-check-input" name="[@count].Selected" asp-for="@group.ElementAt(n).Selected" />
                         </td>
                         <td>
-                            <input class="form-check-input" name="[@n].Rejected" asp-for="@group.ElementAt(n).Rejected" />
+                            <input class="form-check-input" name="[@count].Rejected" asp-for="@group.ElementAt(n).Rejected" />
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => group.ElementAt(n).PlaceDate)
@@ -99,6 +100,7 @@
                             @Html.DisplayFor(modelItem => group.ElementAt(n).ArticleType)
                         </td>
                     </tr>
+                    count = count + 1;
                 }
             }
         </tbody>
