@@ -10,6 +10,7 @@ using AWO_Orders.Models;
 using Microsoft.Data.SqlClient;
 using Wkhtmltopdf.NetCore;
 using System.IO;
+using AWO_Orders.Interface;
 
 namespace AWO_Orders.Pages.OpenOrders
 {
@@ -19,16 +20,19 @@ namespace AWO_Orders.Pages.OpenOrders
         private readonly OrdersContext _orderContext;
         private readonly OrderPositionContext _orderPositionContext;
         private readonly ExternalOrdersContext _externalOrdersContext;
+        private readonly IMailer _mailer;
 
         public OpenOrdersModel(AWO_Orders.Data.OpenOrdersContext context,
             AWO_Orders.Data.OrdersContext orderContext,
             ExternalOrdersContext externalOrdersContext,
-            OrderPositionContext orderPositionContext)
+            OrderPositionContext orderPositionContext,
+            IMailer mailer)
         {
             _context = context;
             _orderContext = orderContext;
             _orderPositionContext = orderPositionContext;
             _externalOrdersContext = externalOrdersContext;
+            _mailer = mailer;
         }
 
         [BindProperty]
@@ -109,9 +113,9 @@ namespace AWO_Orders.Pages.OpenOrders
                 await RefreshOrderStatus(changedOrders);
         }
 
-        private async Task RefreshOrderStatus(IList<int> Ids)
+        private async Task RefreshOrderStatus(IList<int> ids)
         {
-            foreach(var id in Ids)
+            foreach(var id in ids)
             {
                 var order = (from o in _orderContext.Orders where o.Id == id select o).First();
                 var Pos = from p in _orderPositionContext.OrderPositions where p.OrderId == id && p.Status == PositionStatusEnum.Open select p;
@@ -126,11 +130,12 @@ namespace AWO_Orders.Pages.OpenOrders
             }
 
             await _orderContext.SaveChangesAsync();
+            await SendInfoMail(ids);
         }
 
-        private async Task SendInfoMail()
+        private async Task SendInfoMail(IList<int> orderIds)
         {
-
+        
         }
     }
 }

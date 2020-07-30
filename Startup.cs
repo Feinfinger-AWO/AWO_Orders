@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Wkhtmltopdf.NetCore;
 using Rotativa.AspNetCore;
+using AWO_Orders.Models;
+using AWO_Orders.Interface;
 
 namespace AWO_Orders
 {
@@ -113,7 +115,8 @@ namespace AWO_Orders
             services.AddDbContext<ExternalOrdersContext>(options =>
                     options.UseSqlServer(builder.ConnectionString));
 
-           // services.AddWkhtmltopdf("wkhtmltopdf");
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            services.AddSingleton<IMailer, Mailer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
