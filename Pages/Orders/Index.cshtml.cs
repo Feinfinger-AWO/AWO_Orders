@@ -14,20 +14,27 @@ namespace AWO_Orders.Pages.Orders
     public class IndexModel : BasePageModel
     {
         private readonly AWO_Orders.Data.OrdersContext _context;
+        private readonly OrderStatusContext _orderStatusContext;
         private string filterText;
         private int filterStatusId;
 
-        public IndexModel(AWO_Orders.Data.OrdersContext context)
+        public IndexModel(AWO_Orders.Data.OrdersContext context, OrderStatusContext orderStatusContext)
         {
             _context = context;
+            _orderStatusContext = orderStatusContext;
         }
 
-        public async Task OnGetAsync(string searchString, int? filterStatusId)
+        public async Task OnGetAsync(string searchString, int? filterStatusId,int? id)
         {
             var loginItem = GetLogin();
-                
+
             FilterStatusId = filterStatusId?? 1;
             FilterText = searchString;
+
+            if (id.HasValue)
+            {
+                await SetReady(id.Value);
+            }
 
             var orders = (loginItem.Right.CanProcess) ?
                     from s in _context.Orders where s.StatusId == FilterStatusId select s :
@@ -44,6 +51,14 @@ namespace AWO_Orders.Pages.Orders
 
             OrderModel = OrderModel.OrderBy(a => a.PlaceDate).ToList();
             ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>(), "Id", "Ident");
+        }
+
+        private async Task SetReady(int orderId)
+        {
+            var order = (from s in _context.Orders where s.Id == orderId select s).First();
+            order.StatusId = (from s in _orderStatusContext.OrderStatus where s.BaseStatus == OrderBaseStatusEnum.Okay select s).First().Id;
+            FilterStatusId = order.StatusId;
+            await _context.SaveChangesAsync();
         }
 
         public string FilterText { get => filterText; set => filterText = value; }

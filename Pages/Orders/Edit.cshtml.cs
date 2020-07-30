@@ -73,7 +73,7 @@ namespace AWO_Orders.Pages.Orders
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index",new { filterStatusId = OrderModel.StatusId });
         }
 
         private bool OrderModelExists(int id)

@@ -15,68 +15,81 @@
         <a asp-page="Create" asp-route-id="@Model.Order.Id"><img alt="Neu" src="Images\hinzufuegen32.png" /></a>
     }
 </p>
-<p>
-    <a asp-page="/Orders/Index">Zurück</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderPosition[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderPosition[0].Number)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderPosition[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderPosition[0].ArticleNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderPosition[0].Count)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderPosition[0].Order)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderPosition[0].ArticleType)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.OrderPosition) {
-        <tr>
-            <td>
-                @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess)
-                {
-                    <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
-                    <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Count)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Order.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArticleType.Ident)
-            </td>
-        </tr>
+@if (Model.Order.Status.BaseStatus == OrderBaseStatusEnum.Open)
+{
+    <p>
+        <a asp-page="/Orders/Index" asp-route-id="@Model.Order.Id">Bestellung fertig</a>
+    </p>
 }
-    </tbody>
-</table>
+@if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess)
+{
+    <p>
+        <a asp-page="/Orders/Edit" asp-route-id="@Model.Order.Id">Zum Auftrag</a>
+    </p>
+}
+    <p>
+        <a asp-page="/Orders/Index" asp-route-filterStatusId="@Model.Order.StatusId">Zur Übersicht</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderPosition[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderPosition[0].Number)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderPosition[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderPosition[0].ArticleNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderPosition[0].Count)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderPosition[0].Order)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderPosition[0].ArticleType)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderPosition)
+            {
+                <tr>
+                    <td>
+                        @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess)
+                        {
+                            <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
+                            <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArticleNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Order.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArticleType.Ident)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

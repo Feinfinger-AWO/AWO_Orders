@@ -31,7 +31,8 @@ namespace AWO_Orders.Pages.OrderPositions
                 .Include(o => o.Order).Where(a=>a.OrderId == id).ToListAsync();
 
             var order = from o in _context.Orders where o.Id == id select o;
-            Order = await order.SingleOrDefaultAsync();
+            Order = await order.Include(o => o.Status).SingleOrDefaultAsync();
+
         }
 
 
