@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Wkhtmltopdf.NetCore;
 using System.IO;
 using AWO_Orders.Interface;
+using System.Text;
 
 namespace AWO_Orders.Pages.OpenOrders
 {
@@ -88,6 +89,7 @@ namespace AWO_Orders.Pages.OpenOrders
 
         private async Task SetPositionStatus(IList<V_OrdersModel> items, long externId)
         {
+            var positions = new List<OrderPositionModel>();
             var changedOrders = new List<int>();
             foreach(var item in items)
             {
@@ -103,21 +105,25 @@ namespace AWO_Orders.Pages.OpenOrders
                     {
                         position.Status = PositionStatusEnum.Rejected;
                     }
-                
-                    if(!changedOrders.Contains(position.OrderId))
+
+                    positions.Add(position);
+
+                    if (!changedOrders.Contains(position.OrderId))
                         changedOrders.Add(position.OrderId);
                 }
             }
             await _orderPositionContext.SaveChangesAsync();
             if(changedOrders.Any())
-                await RefreshOrderStatus(changedOrders);
+                await RefreshOrderStatus(changedOrders, positions);
         }
 
-        private async Task RefreshOrderStatus(IList<int> ids)
+        private async Task RefreshOrderStatus(IList<int> ids, List<OrderPositionModel> positions)
         {
+            var orders = new List<OrderModel>();
             foreach(var id in ids)
             {
-                var order = (from o in _orderContext.Orders where o.Id == id select o).First();
+                var order = (from o in _orderContext.Orders where o.Id == id select o).Include(e=>e.Empl).First();
+               
                 var Pos = from p in _orderPositionContext.OrderPositions where p.OrderId == id && p.Status == PositionStatusEnum.Open select p;
                 if (Pos.Any())
                 {
@@ -127,15 +133,35 @@ namespace AWO_Orders.Pages.OpenOrders
                 {
                     order.StatusId = (from s in _orderContext.OrderStatus where s.BaseStatus == OrderBaseStatusEnum.Ordered select s).First().Id;
                 }
+                orders.Add(order);
             }
 
             await _orderContext.SaveChangesAsync();
-            await SendInfoMail(ids);
+            await SendInfoMail(orders, positions);
         }
 
-        private async Task SendInfoMail(IList<int> orderIds)
+        private async Task SendInfoMail(IList<OrderModel> orders, List<OrderPositionModel> positions)
         {
-        
+            foreach(var group in orders.GroupBy(g=>g.EmplId))
+            {
+                var mail = group.First().Empl.EMail;
+
+                var builder = new StringBuilder();
+
+                if (!String.IsNullOrWhiteSpace(mail))
+                {
+                    foreach (var order in group)
+                    {
+                        var posList = positions.Where(p => p.OrderId == order.Id);
+                        builder.Append("<p>Bestellung: " + order.Number + " Status: " + order.Status.Ident + " </p>");
+                        foreach (var position in posList)
+                        {
+                            builder.Append("Position: " + position.Number + " Beschreibung: " + position.Description + " Status: " + position.Status.ToString() + " <br>");
+                        }
+                    }
+                    await _mailer.SendEmailAsync(mail, null, builder.ToString());
+                }
+            }
         }
     }
 }
