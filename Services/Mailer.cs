@@ -16,6 +16,7 @@ namespace AWO_Orders.Models
         private readonly SmtpSettings _smtpSettings;
         private readonly IWebHostEnvironment _env;
         private readonly string defaultSubject;
+        private Exception lastError;
 
         public Mailer(IOptions<SmtpSettings> smtpSettings, IWebHostEnvironment env)
         {
@@ -24,8 +25,11 @@ namespace AWO_Orders.Models
             defaultSubject = smtpSettings.Value.Subject;
         }
 
+      
+
         public async Task SendEmailAsync(string email, string subject, string body)
         {
+            LastError = null;
             try
             {
                 var message = new MimeMessage();
@@ -36,9 +40,11 @@ namespace AWO_Orders.Models
                 {
                     Text = body
                 };
+
                 using (var client = new SmtpClient())
                 {
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+
                     if (_env.IsDevelopment())
                     {
                         await client.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, true);
@@ -54,8 +60,10 @@ namespace AWO_Orders.Models
                 }
             }catch(Exception e)
             {
-                //todo extra fehlerbehandlung
+                LastError = e;
             }
         }
+
+        public Exception LastError { get => lastError; set => lastError = value; }
     }
 }

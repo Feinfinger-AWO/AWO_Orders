@@ -12,6 +12,9 @@ using Wkhtmltopdf.NetCore;
 using System.IO;
 using AWO_Orders.Interface;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AWO_Orders.Pages.OpenOrders
 {
@@ -22,6 +25,7 @@ namespace AWO_Orders.Pages.OpenOrders
         private readonly OrderPositionContext _orderPositionContext;
         private readonly ExternalOrdersContext _externalOrdersContext;
         private readonly IMailer _mailer;
+        private string filterText;
 
         public OpenOrdersModel(AWO_Orders.Data.OpenOrdersContext context,
             AWO_Orders.Data.OrdersContext orderContext,
@@ -39,8 +43,9 @@ namespace AWO_Orders.Pages.OpenOrders
         [BindProperty]
         public IList<V_OrdersModel> V_OrdersModel { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string searchString)
         {
+            FilterText = searchString;
             var models = from s in _context.V_Orders
                          where
                     (s.BaseStatus == OrderBaseStatusEnum.Okay || s.BaseStatus == OrderBaseStatusEnum.InProcess) &&
@@ -48,12 +53,22 @@ namespace AWO_Orders.Pages.OpenOrders
                          orderby s.Id, s.PosNumber
                          select s;
 
-            V_OrdersModel = await models.ToListAsync();
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                V_OrdersModel = await models.Where(m => m.Number.ToLower().Contains(searchString.ToLower()) ||
+                    m.Description.ToLower().Contains(searchString.ToLower())||
+                     m.Employee.ToLower().Contains(searchString.ToLower())).ToListAsync();
+            }
+            else
+            {
+                V_OrdersModel = await models.ToListAsync();
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(IList<V_OrdersModel> items)
         {
             var createExtern = items.Where(i => i.Selected == true).Any();
+            LastError = null;
 
             if (createExtern)
             {
@@ -76,7 +91,16 @@ namespace AWO_Orders.Pages.OpenOrders
                 await _externalOrdersContext.SaveChangesAsync();
 
                 await SetPositionStatus(items, (long)externId);
-                return RedirectToPage("/ExternalOrders/Details", new { id = externId });
+
+                if (LastError == null)
+                {
+                    return RedirectToPage("/ExternalOrders/Details", new { id = externId });
+                }
+                else
+                {
+                    var stream = LastError.Message + "\r\n" + LastError.StackTrace;
+                    return File(stream, "application/txt", "Error.txt");
+                }
             }
             else
             {
@@ -160,9 +184,17 @@ namespace AWO_Orders.Pages.OpenOrders
                         }
                     }
                     await _mailer.SendEmailAsync(mail, null, builder.ToString());
+
+                    if(_mailer.LastError != null)
+                    {
+                        LastError = _mailer.LastError;
+                    }
                 }
             }
         }
+
+        public Exception LastError { get; set; }
+        public string FilterText { get => filterText; set => filterText = value; }
     }
 }
 

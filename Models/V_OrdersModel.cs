@@ -15,7 +15,7 @@ namespace AWO_Orders.Models
         public DateTime PlaceDate { get; set; }
         [DisplayName("StatusId")]
         public int StatusId { get; set; }
-        [DisplayName("Auftrag")]
+        [DisplayName("Bestellung")]
         public string Number { get; set; }
         [DisplayName("Status")]
         public string Status { get; set; }
