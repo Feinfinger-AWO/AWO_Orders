@@ -6,7 +6,13 @@
 }
 
 <h1>Externe Bestellungen</h1>
-
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>Suche [Manager/Bemerkung]</p>
+        <p><input class="form-control" name="searchString" width="200" value="@Model.FilterText" /></p>
+    <input type="hidden" name="pageIndex" value="@Model.ExternalOrderModel.PageIndex" />
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -32,30 +38,48 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.ExternalOrderModel) {
-        <tr>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.Id"><img alt="Details" src="\Images\detailansicht32.png" /></a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Manager.SureName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProcessedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Changed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.SureName)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.ExternalOrderModel)
+        {
+            <tr>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.Id"><img alt="Details" src="\Images\detailansicht32.png" /></a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manager.SureName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProcessedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Changed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.SureName)
+                </td>
+            </tr>
+        }
+        @{
+            var prevDisabled = !Model.ExternalOrderModel.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.ExternalOrderModel.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-page="./Index"
+           asp-route-pageIndex="@(Model.ExternalOrderModel.PageIndex - 1)"
+           asp-route-FilterText="@Model.FilterText"
+           class="btn btn-primary @prevDisabled">
+            <img alt="Zurück" src="Images\zuruech32.png" width="32" height="32"/>
+        </a>
+        <a asp-page="./Index"
+           asp-route-pageIndex="@(Model.ExternalOrderModel.PageIndex + 1)"
+           asp-route-FilterText="@Model.FilterText"
+           class="btn btn-primary @nextDisabled">
+            <img alt="Weiter" src="Images\weiter32.png" width="32" height="32" />
+        </a>
     </tbody>
 </table>
