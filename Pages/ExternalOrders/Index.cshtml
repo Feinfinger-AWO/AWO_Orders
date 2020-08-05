@@ -10,7 +10,20 @@
     <div class="form-actions no-color">
         <p>Suche [Manager/Bemerkung]</p>
         <p><input class="form-control" name="searchString" width="200" value="@Model.FilterText" /></p>
-    <input type="hidden" name="pageIndex" value="@Model.ExternalOrderModel.PageIndex" />
+        <input type="hidden" name="pageIndex" value="@Model.ExternalOrderModel.PageIndex" />
+        <input type="hidden" name="from" width="200" value="@Model.From" />-
+        <input type="hidden" name="to" width="200" value="@Model.To" />
+    </div>
+</form>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            @Html.EditorFor(m => m.dtFrom, "", "from")
+            @Html.EditorFor(m => m.dtTo, "", "to")
+            <input type="hidden" name="pageIndex" value="@Model.ExternalOrderModel.PageIndex" />
+            <input type="hidden" name="searchString" value="@Model.FilterText" />
+            <input type="submit" value="Anzeigen" class="btn btn-primary" />
+        </p>
     </div>
 </form>
 <table class="table">
@@ -71,15 +84,20 @@
 
         <a asp-page="./Index"
            asp-route-pageIndex="@(Model.ExternalOrderModel.PageIndex - 1)"
-           asp-route-FilterText="@Model.FilterText"
+           asp-route-searchString="@Model.FilterText"
+           asp-route-from="@Model.From"
+           asp-route-to="@Model.To"
            class="btn btn-primary @prevDisabled">
-            <img alt="Zurück" src="Images\zuruech32.png" width="32" height="32"/>
+            <img alt="Zurück" src="Images\zuruech32.png" width="32" height="32" />
         </a>
         <a asp-page="./Index"
            asp-route-pageIndex="@(Model.ExternalOrderModel.PageIndex + 1)"
-           asp-route-FilterText="@Model.FilterText"
+           asp-route-searchString="@Model.FilterText"
+           asp-route-from="@Model.From"
+           asp-route-to="@Model.To"
            class="btn btn-primary @nextDisabled">
             <img alt="Weiter" src="Images\weiter32.png" width="32" height="32" />
         </a>
+        @Model.From.ToString() - @Model.To.ToString()
     </tbody>
 </table>

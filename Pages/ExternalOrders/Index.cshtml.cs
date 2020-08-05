@@ -9,6 +9,7 @@ using AWO_Orders.Data;
 using AWO_Orders.Models;
 using AWO_Orders.Components;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations;
 
 namespace AWO_Orders.Pages.ExternalOrders
 {
@@ -16,20 +17,43 @@ namespace AWO_Orders.Pages.ExternalOrders
     {
         private readonly AWO_Orders.Data.ExternalOrdersContext _context;
         private string filterText;
+        private DateTime _from = DateTime.MinValue;
+        private DateTime _to = DateTime.Now;
 
         public IndexModel(AWO_Orders.Data.ExternalOrdersContext context)
         {
             _context = context;
         }
 
-        public async Task OnGetAsync(int? pageIndex,string searchString)
+        public async Task OnGetAsync(int? pageIndex,string searchString,string from,string to)
         {
+            if (!string.IsNullOrWhiteSpace(from) && !string.IsNullOrWhiteSpace(to))
+            {
+                _from = DateTime.Parse(from);
+                _to = DateTime.Parse(to);
+                dtFrom = _from;
+                dtTo = _to;
+            }
+
+            IQueryable<ExternalOrderModel> models = null;
             filterText = searchString;
-            var models = (!String.IsNullOrWhiteSpace(searchString)) ? from e in _context.ExternalOrders
-                                                                      where e.Manager.SureName.ToLower().Contains(searchString.ToLower()) ||
-                                                                             e.Notes.ToLower().Contains(searchString.ToLower())
+
+            if (_from > DateTime.MinValue && _to > DateTime.MinValue)
+            {
+                models = (!String.IsNullOrWhiteSpace(searchString)) ? from e in _context.ExternalOrders
+                                                                      where (e.Manager.SureName.ToLower().Contains(searchString.ToLower()) ||
+                                                                             e.Notes.ToLower().Contains(searchString.ToLower())) && e.ProcessedAt>= _from && e.ProcessedAt< _to
                                                                       select e :
-                                                                        _context.ExternalOrders;
+                                                                    from e in _context.ExternalOrders where e.ProcessedAt >= _from && e.ProcessedAt < _to select e;
+            }
+            else
+            {    
+                models = (!String.IsNullOrWhiteSpace(searchString)) ? from e in _context.ExternalOrders
+                                                                          where e.Manager.SureName.ToLower().Contains(searchString.ToLower()) ||
+                                                                                 e.Notes.ToLower().Contains(searchString.ToLower())
+                                                                          select e :
+                                                                            _context.ExternalOrders;
+            }
             if (models.Any())
             {
                 ExternalOrderModel = await PaginatedList<ExternalOrderModel>.CreateAsync(
@@ -44,5 +68,14 @@ namespace AWO_Orders.Pages.ExternalOrders
 
         public PaginatedList<ExternalOrderModel> ExternalOrderModel { get; set; }
         public string FilterText { get => filterText; set => filterText = value; }
+        public string From { get => _from.ToShortDateString(); set => _from = DateTime.Parse(value); }
+        public string To { get => _to.ToShortDateString(); set => _to = DateTime.Parse(value); }
+
+        [DataType(DataType.Date, ErrorMessage = "Date only")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime dtFrom { get => _from; set => _from = value; }
+        [DataType(DataType.Date, ErrorMessage = "Date only")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime dtTo { get => _to; set => _to = value; }
     }
 }
