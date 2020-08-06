@@ -18,7 +18,7 @@ namespace AWO_Orders.Pages.ExternalOrders
         private readonly AWO_Orders.Data.ExternalOrdersContext _context;
         private string filterText;
         private DateTime _from = DateTime.MinValue;
-        private DateTime _to = DateTime.Now;
+        private DateTime _to = DateTime.Now.AddDays(1);
 
         public IndexModel(AWO_Orders.Data.ExternalOrdersContext context)
         {
@@ -27,14 +27,15 @@ namespace AWO_Orders.Pages.ExternalOrders
 
         public async Task OnGetAsync(int? pageIndex,string searchString,string from,string to)
         {
+
             if (!string.IsNullOrWhiteSpace(from) && !string.IsNullOrWhiteSpace(to))
             {
                 _from = DateTime.Parse(from);
                 _to = DateTime.Parse(to);
-                dtFrom = _from;
-                dtTo = _to;
             }
 
+            dtFrom = _from;
+            dtTo = _to;
             IQueryable<ExternalOrderModel> models = null;
             filterText = searchString;
 
@@ -42,9 +43,9 @@ namespace AWO_Orders.Pages.ExternalOrders
             {
                 models = (!String.IsNullOrWhiteSpace(searchString)) ? from e in _context.ExternalOrders
                                                                       where (e.Manager.SureName.ToLower().Contains(searchString.ToLower()) ||
-                                                                             e.Notes.ToLower().Contains(searchString.ToLower())) && e.ProcessedAt>= _from && e.ProcessedAt< _to
+                                                                             e.Notes.ToLower().Contains(searchString.ToLower())) && e.ProcessedAt.Date >= _from.Date && e.ProcessedAt.Date <= _to.Date
                                                                       select e :
-                                                                    from e in _context.ExternalOrders where e.ProcessedAt >= _from && e.ProcessedAt < _to select e;
+                                                                    from e in _context.ExternalOrders where e.ProcessedAt.Date >= _from.Date && e.ProcessedAt.Date <= _to.Date select e;
             }
             else
             {    
