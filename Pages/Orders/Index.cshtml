@@ -10,7 +10,7 @@
 <p>
     @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess)
     {
-    <a asp-page="Create"><img alt="Neu" src="\Images\hinzufuegen32.png" /></a>
+        <a asp-page="Create"><img alt="Neu" src="\Images\hinzufuegen32.png" /></a>
     }
 </p>
 <form asp-page="./Index" method="get">
@@ -20,9 +20,31 @@
     </div>
     <div class="form-actions no-color">
         <p>Status</p>
-        <p> <select name="filterStatusId" asp-for="FilterStatusId" width="200" value ="@Model.FilterStatusId" class="form-control" asp-items="ViewBag.StatusId" onchange="submit()"></select></p>
+        <p> <select name="filterStatusId" asp-for="FilterStatusId" width="200" value="@Model.FilterStatusId" class="form-control" asp-items="ViewBag.StatusId" onchange="submit()"></select></p>
     </div>
 </form>
+@{
+    if (Model.PagingEnabled)
+    {
+        var prevDisabled = !Model.POrderModel.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.POrderModel.HasNextPage ? "disabled" : "";
+
+        <a asp-page="./Index"
+           asp-route-pageIndex="@(Model.POrderModel.PageIndex - 1)"
+           asp-route-searchString="@Model.FilterText"
+           asp-route-filterStatusId="@Model.FilterStatusId"
+           class="btn btn-primary @prevDisabled">
+            <img alt="Zurück" src="Images\zuruech32.png" width="32" height="32" />
+        </a>
+        <a asp-page="./Index"
+           asp-route-pageIndex="@(Model.POrderModel.PageIndex + 1)"
+           asp-route-searchString="@Model.FilterText"
+           asp-route-filterStatusId="@Model.FilterStatusId"
+           class="btn btn-primary @nextDisabled">
+            <img alt="Weiter" src="Images\weiter32.png" width="32" height="32" />
+        </a>
+    }
+}
 <table class="table">
     <thead>
         <tr>
@@ -51,42 +73,43 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.OrderModel) {
-        <tr>
-            <td>
-                @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess) 
-                { 
-                    <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="\Images\bearbeiten32.png" /></a>
-                    <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="\Images\loeschen32.png" /></a>
-                }
+        @foreach (var item in (Model.PagingEnabled)? Model.POrderModel : Model.OrderModel)
+        {
+            <tr>
+                <td>
+                    @if (Model.SessionLoginItem.Right.CanOrder || Model.SessionLoginItem.Right.CanProcess)
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="\Images\bearbeiten32.png" /></a>
+                        <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="\Images\loeschen32.png" /></a>
+                    }
 
-                @if (Model.SessionLoginItem.Right.CanView)
-                {
-                    <a asp-page="/OrderPositions/Index" asp-route-id="@item.Id"><img alt="Details" src="\Images\detailansicht32.png" /></a>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlaceDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status.Ident)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Empl.SureName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Changed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.SureName)
-            </td>
-        </tr>
-}
+                    @if (Model.SessionLoginItem.Right.CanView)
+                    {
+                        <a asp-page="/OrderPositions/Index" asp-route-id="@item.Id"><img alt="Details" src="\Images\detailansicht32.png" /></a>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PlaceDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.Ident)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empl.SureName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Changed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.SureName)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

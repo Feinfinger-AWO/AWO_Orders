@@ -71,12 +71,17 @@
                 {
                     <tr>
                         <td>
+                            @{
+                                group.ElementAt(n).Selected = false;
+                                group.ElementAt(n).Rejected = false;
+                            }
                             <input type="hidden" name="[@count].Id" asp-for="@group.ElementAt(n).Id" />
                             <input type="hidden" name="[@count].PosId" asp-for="@group.ElementAt(n).PosId" />
-                            <input class="form-check-input" name="[@count].Selected" asp-for="@group.ElementAt(n).Selected" />
+                            <input type="checkbox" id="[@count].Selected" onchange=" document.getElementById('[@count].Rejected').checked = false" name="[@count].Selected" asp-for="@group.ElementAt(n).Selected"/>
                         </td>
                         <td>
-                            <input class="form-check-input" name="[@count].Rejected" asp-for="@group.ElementAt(n).Rejected" />
+                            <input type="checkbox"  id="[@count].Rejected" onchange=" document.getElementById('[@count].Selected').checked = false"  name="[@count].Rejected" asp-for="@group.ElementAt(n).Rejected" />
+
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => group.ElementAt(n).PlaceDate)
