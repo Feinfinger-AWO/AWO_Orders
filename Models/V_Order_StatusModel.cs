@@ -16,5 +16,6 @@ namespace AWO_Orders.Models
         public int Count { get; set; }
         [DisplayName("Status")]
         public string Status { get; set; }
+        public int SortNumber { get; set; }
     }
 }

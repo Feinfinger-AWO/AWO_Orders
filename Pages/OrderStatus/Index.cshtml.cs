@@ -25,7 +25,7 @@ namespace AWO_Orders.Pages.OrderStatus
         {
             OrderStatusModel = await _context.OrderStatus
                 .Include(o => o.Employee).ToListAsync();
-            OrderStatusModel = OrderStatusModel.OrderBy(a => a.Ident).ToList();
+            OrderStatusModel = OrderStatusModel.OrderBy(a => a.SortNumber).ToList();
         }
     }
 }

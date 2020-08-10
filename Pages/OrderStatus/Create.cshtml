@@ -14,6 +14,11 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="OrderStatusModel.SortNumber" class="control-label"></label>
+                <input asp-for="OrderStatusModel.SortNumber" class="form-control" />
+                <span asp-validation-for="OrderStatusModel.SortNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="OrderStatusModel.Ident" class="control-label"></label>
                 <input asp-for="OrderStatusModel.Ident" class="form-control" />
                 <span asp-validation-for="OrderStatusModel.Ident" class="text-danger"></span>

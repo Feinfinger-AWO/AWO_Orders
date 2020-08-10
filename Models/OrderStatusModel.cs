@@ -23,5 +23,8 @@ namespace AWO_Orders.Models
 
         [DisplayName("Basistyp")]
         public OrderBaseStatusEnum BaseStatus { get; set; }
+
+        [DisplayName("Sortierung")]
+        public int SortNumber { get; set; }
     }
 }

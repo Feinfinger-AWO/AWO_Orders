@@ -19,5 +19,6 @@ namespace AWO_Orders.Models
         [DisplayName("Mitarbeiter")]
         public int EmplId { get; set; }
         public virtual EmployeeModel Empl { get; set; }
+        public int SortNumber { get; set; }
     }
 }

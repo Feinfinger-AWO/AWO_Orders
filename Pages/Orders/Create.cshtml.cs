@@ -23,7 +23,7 @@ namespace AWO_Orders.Pages.Orders
         
         public IActionResult OnGet()
         {
-            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>(), "Id", "Ident");
+            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s=>s.SortNumber), "Id", "Ident");
             return Page();
         }
 

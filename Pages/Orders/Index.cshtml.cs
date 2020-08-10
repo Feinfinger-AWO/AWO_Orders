@@ -79,7 +79,7 @@ namespace AWO_Orders.Pages.Orders
                 OrderModel = OrderModel.OrderBy(a => a.PlaceDate).ToList();
             }
 
-            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>(), "Id", "Ident");
+            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s=>s.SortNumber), "Id", "Ident");
         }
 
         private async Task SetReady(int orderId)
@@ -91,7 +91,6 @@ namespace AWO_Orders.Pages.Orders
         }
 
         public string FilterText { get => filterText; set => filterText = value; }
-
         public IList<OrderModel> OrderModel { get; set; }
         public int FilterStatusId { get => filterStatusId; set => filterStatusId = value; }
         public PaginatedList<OrderModel> POrderModel { get; set; }

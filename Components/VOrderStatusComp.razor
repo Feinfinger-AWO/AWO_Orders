@@ -30,7 +30,7 @@
     {
         get
         {
-            return context.V_Order_Status.ToList();
+            return context.V_Order_Status.OrderBy(s=>s.SortNumber).ToList();
         }
     }
 }

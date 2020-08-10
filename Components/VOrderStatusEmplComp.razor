@@ -42,7 +42,7 @@
                 from s in context.V_Order_Status_Empl where s.EmplId == EmployeeId.Value select s :
                  from s in context.V_Order_Status_Empl orderby s.EmplId select s;
 
-            return orders.Include(o => o.Empl).ToList();
+            return orders.Include(o => o.Empl).OrderBy(s => s.SortNumber).ToList();
         }
     }
 }

@@ -15,6 +15,9 @@
         <tr>
             <th></th>
             <th>
+                @Html.DisplayNameFor(model => model.OrderStatusModel[0].SortNumber)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.OrderStatusModel[0].Ident)
             </th>
             <th>
@@ -37,6 +40,9 @@
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id"><img alt="Bearbeiten" src="Images\bearbeiten32.png" /></a>
                 <a asp-page="./Delete" asp-route-id="@item.Id"><img alt="Löschen" src="Images\loeschen32.png" /></a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SortNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ident)
