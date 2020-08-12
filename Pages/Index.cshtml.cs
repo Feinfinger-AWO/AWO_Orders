@@ -19,20 +19,47 @@ namespace AWO_Orders.Pages
     public class IndexModel : BasePageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly VOrderStatusContext _vcontext;
+        private readonly OrdersContext _ordersContext;
 
-        public IndexModel(ILogger<IndexModel> logger,VOrderStatusContext vcontext)
+        public IndexModel(ILogger<IndexModel> logger,VOrderStatusContext vcontext, OrdersContext ordersContext)
         {
+            _ordersContext = ordersContext;
+            _vcontext = vcontext;
             InitialValue = vcontext;
              _logger = logger;
         }
 
-        public void OnGet(int? exit)
+        public IActionResult OnGet(int? exit)
         {
+
             if (exit.HasValue && exit.Value == 1)
             {
                 Logout();
-                return;
+                return null;
             }
+            return null;
+        }
+
+        public ActionResult OnGetSearch(string term)
+        {
+            if (!string.IsNullOrWhiteSpace(term))
+            {
+                IList<string> names = null;
+
+                if (SessionLoginItem.Right.CanProcess)
+                {
+                    names = _ordersContext.Orders.Where(p => p.Number.Contains(term)).Select(p => p.Number).ToList();
+                }
+                else
+                {
+                    names = _ordersContext.Orders.Where(p => p.EmplId == SessionLoginItem.EmployeeId &&  p.Number.Contains(term)).Select(p => p.Number).ToList();
+                }
+
+                return new JsonResult(names.ToArray());
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -40,8 +67,14 @@ namespace AWO_Orders.Pages
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="Password"></param>
-        public void OnPost(string Name,string Password)
+        public IActionResult OnPost(string Name,string Password, string ordersearch)
         {
+            if (!string.IsNullOrWhiteSpace(ordersearch))
+            {
+                return RedirectToPage("/Orders/Index", new { ordersearch = ordersearch });
+
+            }
+
             try
             {
                 if (!String.IsNullOrWhiteSpace(Name) && !String.IsNullOrWhiteSpace(Password))
@@ -87,8 +120,9 @@ namespace AWO_Orders.Pages
                 }
             }catch(Exception e)
             {
-                RedirectToPage("/Error",new {ex = e });
+                return RedirectToPage("/Error",new {ex = e });
             }
+            return null;
         }
 
         private void InitLogin()

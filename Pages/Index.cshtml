@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "AWO - Bestellungen";
 }
+
+
 @if (Model.SessionLoginItem.LoginFailed)
 {
     <p>Login fehlgeschlagen!</p>
@@ -32,14 +34,31 @@
 }
 else
 {
+    <table class="table">
+        <tr>
+            <th>
+                @if (Model.SessionLoginItem.Right.CanProcess)
+                {
+                    <component type="typeof(AWO_Orders.Components.VOrderStatusComp)" render-mode="ServerPrerendered" />
+                }
+                else
+                {
+                    <component type="typeof(AWO_Orders.Components.VOrderStatusEmplComp)" param-EmployeeId="@Model.SessionLoginItem.EmployeeId" render-mode="ServerPrerendered" />
+                }
 
+            </th>
+        </tr>
+        <tr>
+            <th>
 
-    if (Model.SessionLoginItem.Right.CanProcess)
-    {
-        <component type="typeof(AWO_Orders.Components.VOrderStatusComp)" render-mode="ServerPrerendered" />
-    }
-    else
-    {
-        <component type="typeof(AWO_Orders.Components.VOrderStatusEmplComp)" param-EmployeeId = "@Model.SessionLoginItem.EmployeeId"   render-mode="ServerPrerendered" />
-    }
+                <form asp-page="./Index" method="post">
+                    <div class="form-actions no-color">
+                        <p>Suche [Bestellnummer]</p>
+                        <p><input class="form-control" id="ordersearch" name="ordersearch" width="200" value="" /></p>
+                    </div>
+                </form>
+            </th>
+        </tr>
+    </table>
+
 }

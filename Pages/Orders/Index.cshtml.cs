@@ -26,57 +26,74 @@ namespace AWO_Orders.Pages.Orders
             _orderStatusContext = orderStatusContext;
         }
 
-        public async Task OnGetAsync(string searchString, int? filterStatusId, int? id,int? pageIndex)
+        public async Task OnGetAsync(string searchString, int? filterStatusId, int? id,int? pageIndex,string ordersearch)
         {
             var loginItem = GetLogin();
-
-            FilterStatusId = filterStatusId ?? 1;
-            FilterText = searchString;
-
-            if (id.HasValue)
-            {
-                await SetReady(id.Value);
-            }
-
             IQueryable<OrderModel> orders = null;
 
-            if (!String.IsNullOrWhiteSpace(FilterText))
+            if (!string.IsNullOrWhiteSpace(ordersearch))
             {
 
                 orders = (loginItem.Right.CanProcess) ?
-                        from s in _context.Orders where s.StatusId == FilterStatusId &&
-                        (s.Employee.SureName.ToLower().Contains(FilterText.ToLower()) || s.Number.ToLower().Contains(FilterText.ToLower()))
-                        select s :
-                        from s in _context.Orders where s.StatusId == FilterStatusId && s.EmplId == loginItem.EmployeeId &&
-                                                (s.Employee.SureName.ToLower().Contains(FilterText.ToLower()) || s.Number.ToLower().Contains(FilterText.ToLower()))
-                        select s;
+                        from s in _context.Orders where s.Number.ToLower().Contains(ordersearch.ToLower()) select s :
+                          from s in _context.Orders where s.Number.ToLower().Contains(ordersearch.ToLower())  && s.EmplId == loginItem.EmployeeId select s;
+                OrderModel = await orders
+                    .Include(o => o.Employee)
+                    .Include(o => o.Status).ToListAsync();
+                        OrderModel = OrderModel.OrderBy(a => a.PlaceDate).ToList();
+
             }
             else
             {
-                orders = (loginItem.Right.CanProcess) ?
-                        from s in _context.Orders where s.StatusId == FilterStatusId select s :
-                          from s in _context.Orders where s.StatusId == FilterStatusId && s.EmplId == loginItem.EmployeeId select s;
-            }
 
-            if (PagingEnabled)
-            {
-                if (orders.Any())
+                FilterStatusId = filterStatusId ?? 1;
+                FilterText = searchString;
+
+                if (id.HasValue)
                 {
-                    POrderModel = await PaginatedList<OrderModel>.CreateAsync(
-                        orders.Include(o => o.Employee).Include(o => o.Status)
-                        .AsNoTracking(), pageIndex ?? 1, 10);
+                    await SetReady(id.Value);
+                }
+
+                if (!String.IsNullOrWhiteSpace(FilterText))
+                {
+
+                    orders = (loginItem.Right.CanProcess) ?
+                            from s in _context.Orders
+                            where s.StatusId == FilterStatusId &&
+                                (s.Employee.SureName.ToLower().Contains(FilterText.ToLower()) || s.Number.ToLower().Contains(FilterText.ToLower()))
+                            select s :
+                            from s in _context.Orders
+                            where s.StatusId == FilterStatusId && s.EmplId == loginItem.EmployeeId &&
+                      (s.Employee.SureName.ToLower().Contains(FilterText.ToLower()) || s.Number.ToLower().Contains(FilterText.ToLower()))
+                            select s;
                 }
                 else
                 {
-                    POrderModel = await PaginatedList<OrderModel>.CreateAsync(orders.AsNoTracking(), 1, 0);
+                    orders = (loginItem.Right.CanProcess) ?
+                            from s in _context.Orders where s.StatusId == FilterStatusId select s :
+                              from s in _context.Orders where s.StatusId == FilterStatusId && s.EmplId == loginItem.EmployeeId select s;
                 }
-            }
-            else
-            {
-                OrderModel = await orders
-                    .Include(o => o.Employee)
-                     .Include(o => o.Status).ToListAsync();
-                OrderModel = OrderModel.OrderBy(a => a.PlaceDate).ToList();
+
+                if (PagingEnabled)
+                {
+                    if (orders.Any())
+                    {
+                        POrderModel = await PaginatedList<OrderModel>.CreateAsync(
+                            orders.Include(o => o.Employee).Include(o => o.Status)
+                            .AsNoTracking(), pageIndex ?? 1, 10);
+                    }
+                    else
+                    {
+                        POrderModel = await PaginatedList<OrderModel>.CreateAsync(orders.AsNoTracking(), 1, 0);
+                    }
+                }
+                else
+                {
+                    OrderModel = await orders
+                        .Include(o => o.Employee)
+                         .Include(o => o.Status).ToListAsync();
+                    OrderModel = OrderModel.OrderBy(a => a.PlaceDate).ToList();
+                }
             }
 
             ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s=>s.SortNumber), "Id", "Ident");
@@ -98,7 +115,11 @@ namespace AWO_Orders.Pages.Orders
         { 
             get
             {
-                var status = (from s in _context.OrderStatus where s.Id == FilterStatusId select s).First();
+                var status = (from s in _context.OrderStatus where s.Id == FilterStatusId select s).FirstOrDefault();
+
+                if (status == null)
+                    return false;
+                
                 pagingEnabled = status.BaseStatus == OrderBaseStatusEnum.Canceled || status.BaseStatus == OrderBaseStatusEnum.Delivered;
                 return pagingEnabled;
             }

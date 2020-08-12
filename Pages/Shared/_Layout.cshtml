@@ -6,6 +6,16 @@
     <title>@ViewData["Title"] - AWO_Orders</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('#ordersearch').autocomplete({
+    source: '@Url.Page("index", "search")'
+    });
+    });
+    </script>
 </head>
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
@@ -82,7 +92,7 @@
                         <li>
                             <img alt="Logo" src="\Images\LogoAwoTop.jpg" height="60" />
                         </li>
-</div>
+                </div>
             </div>
         </nav>
     </header>
@@ -98,10 +108,9 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>
