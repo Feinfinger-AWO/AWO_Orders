@@ -1,0 +1,19 @@
+﻿@page
+@model AWO_Orders.Pages.InfoModel
+@{
+    ViewData["Title"] = "Info";
+}
+
+<h1>Info</h1>
+
+<p>
+    <label>@Model.Subject</label>
+</p>
+<p>
+    <form method="post">
+        <input type="hidden" id="nextPage" name="nextPage" value="@Model.NextPage" />
+        <input type="hidden" id="parameter" name="parameter" value="@Model.Parameter" />
+        <input type="submit" value="Weiter" class="btn btn-primary" />
+    </form>
+</p>
+

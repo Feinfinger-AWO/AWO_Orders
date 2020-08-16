@@ -104,9 +104,8 @@ namespace AWO_Orders.Pages.OpenOrders
             }
             else
             {
-                //todo: Rückmeldung das status gesetzt wurde
                 await SetPositionStatus(items, -1);
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Info", new { subject = "Status wurde geändert!", nextPage = "/Index" });
             }
      
         }
@@ -183,7 +182,7 @@ namespace AWO_Orders.Pages.OpenOrders
                             builder.Append("Position: " + position.Number + " Beschreibung: " + position.Description + " Status: " + position.Status.ToString() + " <br>");
                         }
                     }
-                    await _mailer.SendEmailAsync(mail, null, builder.ToString());
+                    await _mailer.SendPdfAsync(mail, null, builder.ToString());
 
                     if(_mailer.LastError != null)
                     {

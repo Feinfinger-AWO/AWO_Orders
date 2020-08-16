@@ -1,0 +1,64 @@
+﻿@page
+@model AWO_Orders.Pages.SendMail.SelectMailPDFModel
+
+@{
+    ViewData["Title"] = "SelectMail";
+}
+
+<h1>Versenden an...</h1>
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeModel[0].SureName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeModel[0].Forename)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeModel[0].Job)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeModel[0].EMail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeModel[0].Location)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (int n = 0; n < Model.EmployeeModel.Count; n++)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" name="[@n].Id" asp-for="@Model.EmployeeModel[n].Id" />
+                        <input type="hidden" name="[@n].SureName" asp-for="@Model.EmployeeModel[n].SureName" />
+                        <input type="hidden" name="[@n].EMail" asp-for="@Model.EmployeeModel[n].EMail" />
+                        <input type="checkbox" id="[@n].Selected" name="[@n].Selected" asp-for="@Model.EmployeeModel[n].Selected" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.EmployeeModel[n].SureName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.EmployeeModel[n].Forename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.EmployeeModel[n].Job)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.EmployeeModel[n].EMail)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.EmployeeModel[n].Location.Ident)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <input type="hidden" name="Pdfid" value="@Model.PDFId" />
+    <input type="submit" value="Senden" class="btn btn-primary" />
+</form>

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,21 +26,51 @@ namespace AWO_Orders.Models
             defaultSubject = smtpSettings.Value.Subject;
         }
 
-      
 
-        public async Task SendEmailAsync(string email, string subject, string body)
+        public async Task SendPdfAsync(string email, string subject, string body,byte[]pdf,string pdfName)
+        {
+            var multipart = new Multipart("mixed");
+            multipart.Add(new TextPart("html") { Text = body });
+            var stream = new MemoryStream(pdf);
+
+            var attachment = new MimePart("application", "pdf")
+            {
+                Content = new MimeContent(stream, ContentEncoding.Default),
+                ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
+                ContentTransferEncoding = ContentEncoding.Base64,
+                FileName = pdfName
+            };
+
+            multipart.Add(attachment);
+            await SendPdfAsync(email, subject, null, multipart);
+        }
+
+        public async Task SendPdfAsync(string email, string subject, string body,Multipart multiBody = null)
         {
             LastError = null;
             try
             {
-                var message = new MimeMessage();
+                var message = new MimeMessage();  
                 message.From.Add(new MailboxAddress(_smtpSettings.SenderName, _smtpSettings.SenderEmail));
-                message.To.Add(new MailboxAddress(email));
-                message.Subject = subject ?? defaultSubject;
-                message.Body = new TextPart("html")
+
+                foreach (var mail in email.Trim(';').Split(new char[] { ';' }))
                 {
-                    Text = body
-                };
+                    message.To.Add(new MailboxAddress(mail));
+                }
+                
+                message.Subject = subject ?? defaultSubject;
+
+                if (multiBody == null)
+                {
+                    message.Body = new TextPart("html")
+                    {
+                        Text = body
+                    };
+                }
+                else
+                {
+                    message.Body = multiBody;
+                }
 
                 using (var client = new SmtpClient())
                 {

@@ -94,5 +94,8 @@ namespace AWO_Orders.Models
             } 
         }
 
+        [NotMapped]
+        [DisplayName("Ausgewählt")]
+        public bool Selected { get; set; }
     }
 }

@@ -42,6 +42,8 @@ namespace AWO_Orders.Pages.ExternalOrders
                 .Include(e => e.Employee)
                 .Include(e => e.Manager).FirstOrDefaultAsync(m => m.Id == id);
 
+            DocumentExists = ExternalOrderModel.Document != null;
+
             var positions = from p in _contextPositions.OrderPositions where p.ExternId == id select p;
 
             OrderPosition = positions.Include(o => o.ArticleType)
@@ -56,8 +58,27 @@ namespace AWO_Orders.Pages.ExternalOrders
             return Page();
         }
 
-        public IActionResult OnPostPDF(int? id,string[] notes)
+        public IActionResult OnPostPDFShow(int? id)
         {
+            if (!id.HasValue) return null;
+
+            ExternalOrderModel = _context.ExternalOrders.FirstOrDefault(m => m.Id == id);
+
+            var stream = new MemoryStream(ExternalOrderModel.Document);
+            return File(stream, "application/pdf", "ExterneBestellung_" + ExternalOrderModel.Id + ".pdf");
+        }
+
+        public IActionResult OnPostPDF(int? id, string[] notes, int? idMail)
+        {
+            if (idMail.HasValue)
+            {
+                if(_context.ExternalOrders.First(e=>e.Id == idMail).Document == null) 
+                {
+                    return RedirectToPage("/Info", new { subject = "Es ist kein Dokument vorhanden!", nextPage = "/ExternalOrders/Details", paramId =  idMail  });
+                }
+                return RedirectToPage("/SendMail/SelectMailPDF", new { id = idMail.Value });
+            }
+
             Print = true;
 
             ExternalOrderModel = _context.ExternalOrders
@@ -93,5 +114,7 @@ namespace AWO_Orders.Pages.ExternalOrders
         public IList<OrderPositionModel> OrderPosition { get; set; }
 
         public bool Print { get; set; }
+
+        public bool DocumentExists { get; set; }
     }
 }
