@@ -72,7 +72,6 @@ namespace AWO_Orders.Pages
             if (!string.IsNullOrWhiteSpace(ordersearch)|| !string.IsNullOrWhiteSpace(directSearch))
             {
                 return RedirectToPage("/Orders/Index", new { ordersearch = string.IsNullOrWhiteSpace(directSearch)?ordersearch: directSearch });
-
             }
 
             try

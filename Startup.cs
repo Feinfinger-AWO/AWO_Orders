@@ -56,6 +56,13 @@ namespace AWO_Orders
                 options.Cookie.IsEssential = true;
             });
 
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Index";
+                options.SlidingExpiration = true;
+            });
+
             services.AddDbContext<LocationContext>(options =>
             {
                 options.UseSqlServer(builder.ConnectionString);
@@ -125,10 +132,11 @@ namespace AWO_Orders
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseExceptionHandler("/Error");
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
             }
 
             app.UseStaticFiles();
