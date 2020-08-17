@@ -67,11 +67,11 @@ namespace AWO_Orders.Pages
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="Password"></param>
-        public IActionResult OnPost(string Name,string Password, string ordersearch)
+        public IActionResult OnPost(string Name,string Password, string ordersearch,string directSearch)
         {
-            if (!string.IsNullOrWhiteSpace(ordersearch))
+            if (!string.IsNullOrWhiteSpace(ordersearch)|| !string.IsNullOrWhiteSpace(directSearch))
             {
-                return RedirectToPage("/Orders/Index", new { ordersearch = ordersearch });
+                return RedirectToPage("/Orders/Index", new { ordersearch = string.IsNullOrWhiteSpace(directSearch)?ordersearch: directSearch });
 
             }
 

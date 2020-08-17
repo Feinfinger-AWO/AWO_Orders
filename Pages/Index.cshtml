@@ -51,8 +51,9 @@ else
         <tr>
             <th>
 
-                <form asp-page="./Index" method="post">
+                <form asp-page="./Index" method="post" id="frmsearch" name="frmsearch">
                     <div class="form-actions no-color">
+                        <input type="hidden" name="directSearch" id="directSearch" />
                         <p>Suche [Bestellnummer]</p>
                         <p><input class="form-control" id="ordersearch" name="ordersearch" width="200" value="" /></p>
                     </div>
