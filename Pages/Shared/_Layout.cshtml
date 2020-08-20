@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
- 
+
     <script>
     $(document).ready(function () {
         $('#ordersearch').autocomplete({
             source: '@Url.Page("index", "search")',
             select: function (e, ui) {
-                $('#directSearch').val(ui.item.label);  
+                $('#directSearch').val(ui.item.label);
                 $('#frmsearch').submit();
             }
         });
@@ -25,8 +25,15 @@
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 @{
+    var logout = false;
     var value = HttpContextAccessor.HttpContext.Session.GetString("Login");
-    var loginItem = (value != null)?Newtonsoft.Json.JsonConvert.DeserializeObject<LoginItem>(value): new LoginItem() {Right = new Models.RightModel() };
+    var loginItem = (value != null) ? Newtonsoft.Json.JsonConvert.DeserializeObject<LoginItem>(value) : new LoginItem() { Right = new Models.RightModel() };
+    var pageRoute = ViewContext.RouteData.Values["page"].ToString();
+    if (pageRoute != "/Index" && loginItem.EmployeeId == 0)
+    {
+        logout = true;
+        IgnoreBody();
+    }
 }
 <body>
     <header>
@@ -82,17 +89,17 @@
                                 </div>
                             </li>
 
-                       
-                        <li class="nav-item">
-                            <div class="dropdown">
-                                <button class="dropbtn">Funktionen</button>
-                                <div class="dropdown-content">
 
-                                    <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logout</a>
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <button class="dropbtn">Funktionen</button>
+                                    <div class="dropdown-content">
 
+                                        <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logout</a>
+
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
                         }
                         <li> </li>
                         <li>
@@ -102,12 +109,18 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+    @if (!logout)
+    {
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
+    else
+    {
+        <h1>Auf Wiedersehen!</h1>
+    }
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - AWO_Orders - <a asp-area="" asp-page="/Privacy">Privacy</a>

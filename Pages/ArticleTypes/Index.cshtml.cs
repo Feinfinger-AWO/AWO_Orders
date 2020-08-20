@@ -10,7 +10,7 @@ using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.ArticleTypes
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly AWO_Orders.Data.ArticleTypeContext _context;
 
