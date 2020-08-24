@@ -22,5 +22,6 @@ namespace AWO_Orders
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        
     }
 }

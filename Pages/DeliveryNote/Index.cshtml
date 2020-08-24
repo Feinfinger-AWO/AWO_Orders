@@ -1,0 +1,80 @@
+﻿@page
+@model AWO_Orders.Pages.DeliveryNote.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Lieferschein</h1>
+<p>
+    <input type="button" onclick="window.print()" value="Drucken" />
+</p>
+<div>
+    <a asp-page="/OrderedOrders/Index">Zurück</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].PlaceDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].ArticleNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].ArticleType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].PosNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].Count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.V_OrdersModel[0].Location)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.V_OrdersModel) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlaceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArticleType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PosNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

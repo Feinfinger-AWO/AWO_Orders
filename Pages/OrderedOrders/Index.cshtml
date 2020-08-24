@@ -1,0 +1,121 @@
+﻿@page
+@model AWO_Orders.Pages.OrderedOrders.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Wareneingang</h1>
+
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>Suche [Bestellung/Mitarbeiter/Beschreibung]</p>
+        <p><input class="form-control" name="searchString" width="200" value="@Model.FilterText" /></p>
+    </div>
+</form>
+<form method="post">
+    <p>
+        <input type="submit" value="Buchen" class="btn btn-primary" />
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Geliefert
+                </th>
+                <th>
+                    Verwerfen
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].PlaceDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Number)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Employee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].PosNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Count)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].ArticleNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.V_OrdersModel[0].ArticleType)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int count = 0; }
+            @foreach (var group in Model.V_OrdersModel.GroupBy(x => x.Location))
+            {
+                var groupName = "Niederlassung: " + group.Key + "  -  Gebiet: " + group.First().Area + "  -  Kostenstelle: " + group.First().CostCenter;
+
+                <tr>
+                    <td colspan="11">
+                        <b>
+                            @groupName
+                        </b>
+                    </td>
+                </tr>
+                for (int n = 0; n < group.Count(); n++)
+                {
+                    <tr>
+                        <td>
+                            @{
+                                group.ElementAt(n).Selected = false;
+                                group.ElementAt(n).Rejected = false;
+                            }
+                            <input type="hidden" name="[@count].Id" asp-for="@group.ElementAt(n).Id" />
+                            <input type="hidden" name="[@count].PosId" asp-for="@group.ElementAt(n).PosId" />
+                            <input type="checkbox" id="[@count].Selected" onchange=" document.getElementById('[@count].Rejected').checked = false" name="[@count].Selected" asp-for="@group.ElementAt(n).Selected" />
+                        </td>
+                        <td>
+                            <input type="checkbox" id="[@count].Rejected" onchange=" document.getElementById('[@count].Selected').checked = false" name="[@count].Rejected" asp-for="@group.ElementAt(n).Rejected" />
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).PlaceDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).Employee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).PosNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).Count)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).ArticleNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => group.ElementAt(n).ArticleType)
+                        </td>
+                    </tr>
+                    count = count + 1;
+                }
+            }
+        </tbody>
+    </table>
+</form>

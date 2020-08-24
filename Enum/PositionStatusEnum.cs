@@ -9,6 +9,7 @@ namespace AWO_Orders
     {
         Open = 0,
         Ordered = 1,
-        Rejected = 2
+        Rejected = 2,
+        Delivered = 3
     }
 }
