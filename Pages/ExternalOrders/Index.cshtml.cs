@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AWO_Orders.Components;
+using AWO_Orders.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
-using AWO_Orders.Components;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations;
 
 namespace AWO_Orders.Pages.ExternalOrders
 {
@@ -25,9 +20,8 @@ namespace AWO_Orders.Pages.ExternalOrders
             _context = context;
         }
 
-        public async Task OnGetAsync(int? pageIndex,string searchString,string from,string to)
+        public async Task OnGetAsync(int? pageIndex, string searchString, string from, string to)
         {
-
             if (!string.IsNullOrWhiteSpace(from) && !string.IsNullOrWhiteSpace(to))
             {
                 _from = DateTime.Parse(from);
@@ -48,11 +42,11 @@ namespace AWO_Orders.Pages.ExternalOrders
                                                                     from e in _context.ExternalOrders where e.ProcessedAt.Date >= _from.Date && e.ProcessedAt.Date <= _to.Date select e;
             }
             else
-            {    
+            {
                 models = (!String.IsNullOrWhiteSpace(searchString)) ? from e in _context.ExternalOrders
-                                                                          where e.Manager.SureName.ToLower().Contains(searchString.ToLower()) ||
-                                                                                 e.Notes.ToLower().Contains(searchString.ToLower())
-                                                                          select e :
+                                                                      where e.Manager.SureName.ToLower().Contains(searchString.ToLower()) ||
+                                                                             e.Notes.ToLower().Contains(searchString.ToLower())
+                                                                      select e :
                                                                             _context.ExternalOrders;
             }
             if (models.Any())
@@ -75,6 +69,7 @@ namespace AWO_Orders.Pages.ExternalOrders
         [DataType(DataType.Date, ErrorMessage = "Date only")]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime dtFrom { get => _from; set => _from = value; }
+
         [DataType(DataType.Date, ErrorMessage = "Date only")]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime dtTo { get => _to; set => _to = value; }

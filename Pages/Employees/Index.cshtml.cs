@@ -1,13 +1,10 @@
-﻿using System;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AWO_Orders.Pages.Employees
 {
@@ -37,13 +34,13 @@ namespace AWO_Orders.Pages.Employees
 
             if (!String.IsNullOrWhiteSpace(FilterText))
             {
-                models = models.Where(a=> a.Forename.ToLower().Contains(FilterText.ToLower())|| a.SureName.ToLower().Contains(FilterText.ToLower())).ToList();
+                models = models.Where(a => a.Forename.ToLower().Contains(FilterText.ToLower()) || a.SureName.ToLower().Contains(FilterText.ToLower())).ToList();
             }
 
             models = models.Select(a => { a.Employee = models.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
-            models = models.Select(a => { a.Location = _context.Locations.Find(new object[] { a.LocationId });return a; }).ToList();
-            models = models.Select(a => { a.Right = _context.Rights.Find(new object[] {  a.RightId }); return a; }).ToList();
-            EmployeeModel = models.OrderBy(a=>a.SureName).ToList();
+            models = models.Select(a => { a.Location = _context.Locations.Find(new object[] { a.LocationId }); return a; }).ToList();
+            models = models.Select(a => { a.Right = _context.Rights.Find(new object[] { a.RightId }); return a; }).ToList();
+            EmployeeModel = models.OrderBy(a => a.SureName).ToList();
         }
 
         /// <summary>
@@ -55,6 +52,5 @@ namespace AWO_Orders.Pages.Employees
         /// Gets or sets the text to filter by surename and forename
         /// </summary>
         public string FilterText { get; set; }
-
     }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.OrderPositions
 {
@@ -43,7 +39,7 @@ namespace AWO_Orders.Pages.OrderPositions
             OrderId = OrderPosition.OrderId;
             Number = OrderPosition.Number;
 
-            ViewData["ArticleTypeId"] = new SelectList(_context.Set<ArticleTypeModel>(), "Id", "Ident");           
+            ViewData["ArticleTypeId"] = new SelectList(_context.Set<ArticleTypeModel>(), "Id", "Ident");
             return Page();
         }
 

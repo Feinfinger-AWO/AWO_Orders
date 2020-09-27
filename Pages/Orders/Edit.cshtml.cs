@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.Orders
 {
@@ -39,7 +35,7 @@ namespace AWO_Orders.Pages.Orders
                 return NotFound();
             }
 
-           ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s => s.SortNumber), "Id", "Ident");
+            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s => s.SortNumber), "Id", "Ident");
             return Page();
         }
 
@@ -73,7 +69,7 @@ namespace AWO_Orders.Pages.Orders
                 }
             }
 
-            return RedirectToPage("./Index",new { filterStatusId = OrderModel.StatusId });
+            return RedirectToPage("./Index", new { filterStatusId = OrderModel.StatusId });
         }
 
         private bool OrderModelExists(int id)

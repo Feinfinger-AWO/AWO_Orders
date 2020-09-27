@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Models;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Models;
-using Microsoft.AspNetCore.Http;
+using System;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Data
 {
     public class OrderLogEntriesContext : DbContext
     {
-        public OrderLogEntriesContext (DbContextOptions<OrderLogEntriesContext> options)
+        public OrderLogEntriesContext(DbContextOptions<OrderLogEntriesContext> options)
             : base(options)
         {
         }
@@ -20,16 +17,15 @@ namespace AWO_Orders.Data
         /// </summary>
         /// <param name="Order"></param>
         /// <param name="changeType"></param>
-        public async Task WriteLog(int OrderId, LogChangeTypesEnum changeType,int employeeId,int? PosId)
+        public async Task WriteLog(int OrderId, LogChangeTypesEnum changeType, int employeeId, int? PosId)
         {
-
             var log = new OrderLogEntriesModel()
             {
                 OrderId = OrderId,
                 EmplId = employeeId,
                 ChangeType = changeType,
                 ChangeDateTime = DateTime.Now,
-                OrderPositionId = (PosId.HasValue)?PosId.Value : -1
+                OrderPositionId = (PosId.HasValue) ? PosId.Value : -1
             };
 
             OrderLogEntries.Add(log);

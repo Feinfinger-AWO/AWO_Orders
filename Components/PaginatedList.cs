@@ -43,7 +43,7 @@ namespace AWO_Orders.Components
 
             if (source.Any())
             {
-                count  = await source.CountAsync();
+                count = await source.CountAsync();
 
                 items = await source.Skip(
                     (pageIndex - 1) * pageSize)
@@ -51,7 +51,7 @@ namespace AWO_Orders.Components
             }
             else
             {
-                 items = new List<T>();
+                items = new List<T>();
             }
 
             return new PaginatedList<T>(items, count, pageIndex, pageSize);

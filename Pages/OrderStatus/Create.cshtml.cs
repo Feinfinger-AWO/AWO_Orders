@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.OrderStatus
 {
@@ -23,11 +20,11 @@ namespace AWO_Orders.Pages.OrderStatus
         {
             var values = Enum.GetValues(typeof(OrderBaseStatusEnum)).Cast<OrderBaseStatusEnum>();
 
-            ViewData["BaseStatus"] = new SelectList(values.Select(v=>new SelectListItem 
-            { 
-                Text = v.ToString(), 
-                Value = ((int)v).ToString() 
-            }).ToList(),"Value","Text");
+            ViewData["BaseStatus"] = new SelectList(values.Select(v => new SelectListItem
+            {
+                Text = v.ToString(),
+                Value = ((int)v).ToString()
+            }).ToList(), "Value", "Text");
 
             return Page();
         }

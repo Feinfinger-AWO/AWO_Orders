@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace AWO_Orders.Pages.Orders
 {
@@ -20,25 +16,24 @@ namespace AWO_Orders.Pages.Orders
         {
             _context = context;
         }
-        
+
         public IActionResult OnGet()
         {
-            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s=>s.SortNumber), "Id", "Ident");
+            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s => s.SortNumber), "Id", "Ident");
             return Page();
         }
 
-
-
         [BindProperty]
-        public OrderModel OrderModel { 
-            get => orderModel; 
+        public OrderModel OrderModel
+        {
+            get => orderModel;
             set
-            { 
-                orderModel = value; 
-                orderModel.StatusId = 1; 
-                orderModel.PlaceDate = DateTime.Now; 
-                orderModel.Number = DateTime.Now.Year.ToString(); 
-            } 
+            {
+                orderModel = value;
+                orderModel.StatusId = 1;
+                orderModel.PlaceDate = DateTime.Now;
+                orderModel.Number = DateTime.Now.Year.ToString();
+            }
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -71,9 +66,7 @@ namespace AWO_Orders.Pages.Orders
                 RedirectToPage("/Error", new { ex = e });
             }
 
-            return RedirectToPage("/OrderPositions/Index",new { id = OrderModel.Id });
+            return RedirectToPage("/OrderPositions/Index", new { id = OrderModel.Id });
         }
-
-        
     }
 }

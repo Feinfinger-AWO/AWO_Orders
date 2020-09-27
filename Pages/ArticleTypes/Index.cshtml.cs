@@ -1,12 +1,9 @@
-﻿using System;
+﻿using AWO_Orders.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.ArticleTypes
 {
@@ -18,7 +15,6 @@ namespace AWO_Orders.Pages.ArticleTypes
         {
             _context = context;
         }
-
 
         public async Task OnGetAsync(string searchString)
         {
@@ -34,7 +30,6 @@ namespace AWO_Orders.Pages.ArticleTypes
             ArticleTypeModel = ArticleTypeModel.Select(a => { a.Employee = _context.Employees.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
             ArticleTypeModel = ArticleTypeModel.OrderBy(a => a.Ident).ToList();
         }
-
 
         public IList<ArticleTypeModel> ArticleTypeModel { get; set; }
 

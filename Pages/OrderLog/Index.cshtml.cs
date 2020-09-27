@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using AWO_Orders.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.OrderLog
 {
@@ -19,7 +15,7 @@ namespace AWO_Orders.Pages.OrderLog
             _context = context;
         }
 
-        public IList<OrderLogEntriesModel> OrderLogEntriesModel { get;set; }
+        public IList<OrderLogEntriesModel> OrderLogEntriesModel { get; set; }
 
         public async Task OnGetAsync()
         {

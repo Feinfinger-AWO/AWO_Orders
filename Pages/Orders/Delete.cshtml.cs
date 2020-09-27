@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.Orders
 {
@@ -52,7 +48,7 @@ namespace AWO_Orders.Pages.Orders
             if (OrderModel != null)
             {
                 var status = _context.OrderStatus.Single(s => s.Id == OrderModel.StatusId);
-                if (status.BaseStatus ==  OrderBaseStatusEnum.Open)
+                if (status.BaseStatus == OrderBaseStatusEnum.Open)
                 {
                     _context.Orders.Remove(OrderModel);
                     await WriteLog(OrderModel.Id, LogChangeTypesEnum.DeleteOrder, null);
@@ -63,7 +59,6 @@ namespace AWO_Orders.Pages.Orders
                     await WriteLog(OrderModel.Id, LogChangeTypesEnum.EditOrder, null);
                 }
 
-              
                 await _context.SaveChangesAsync();
             }
 

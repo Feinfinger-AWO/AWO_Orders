@@ -4,7 +4,6 @@
     ViewData["Title"] = "AWO - Bestellungen";
 }
 
-
 @if (Model.SessionLoginItem.LoginFailed)
 {
     <p>Login fehlgeschlagen!</p>
@@ -45,7 +44,6 @@ else
                 {
                     <component type="typeof(AWO_Orders.Components.VOrderStatusEmplComp)" param-EmployeeId="@Model.SessionLoginItem.EmployeeId" render-mode="ServerPrerendered" />
                 }
-
             </th>
         </tr>
         <tr>

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.OrderPositions
 {
@@ -19,7 +15,7 @@ namespace AWO_Orders.Pages.OrderPositions
             var positions = from s in _context.OrderPositions where s.OrderId == orderId orderby s.Number select s;
             int n = 1;
 
-            foreach(var position in positions)
+            foreach (var position in positions)
             {
                 position.Number = n;
                 n = n + 1;

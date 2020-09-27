@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AWO_Orders.Pages
@@ -13,7 +9,7 @@ namespace AWO_Orders.Pages
         private string _nextPage;
         private string _parameter;
 
-        public void OnGet(string subject,string nextPage, string paramId)
+        public void OnGet(string subject, string nextPage, string paramId)
         {
             _subject = subject;
             _nextPage = nextPage;
@@ -27,7 +23,7 @@ namespace AWO_Orders.Pages
                 return RedirectToPage(nextPage);
             }
             else
-            { 
+            {
                 return RedirectToPage(nextPage, new { id = parameter });
             }
         }
@@ -35,6 +31,5 @@ namespace AWO_Orders.Pages
         public string Subject { get => _subject; set => _subject = value; }
         public string NextPage { get => _nextPage; set => _nextPage = value; }
         public string Parameter { get => _parameter; set => _parameter = value; }
-
     }
 }

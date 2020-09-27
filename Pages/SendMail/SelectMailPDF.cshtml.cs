@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Data;
+using AWO_Orders.Interface;
+using AWO_Orders.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
-using System.Text;
-using AWO_Orders.Interface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.SendMail
 {
@@ -25,11 +24,11 @@ namespace AWO_Orders.Pages.SendMail
             _ordersContext = ordersContext;
         }
 
-        public IList<EmployeeModel> EmployeeModel { get;set; }
+        public IList<EmployeeModel> EmployeeModel { get; set; }
 
         public async Task OnGetAsync(int? id)
         {
-            if(id.HasValue)
+            if (id.HasValue)
                 PDFId = id.Value;
 
             EmployeeModel = await _context.Employees
@@ -60,10 +59,9 @@ namespace AWO_Orders.Pages.SendMail
 
             if (!String.IsNullOrWhiteSpace(mail))
             {
-
                 var order = _ordersContext.ExternalOrders.Single(o => o.Id == externId);
                 //todo: Text auslagern
-                _mailer.SendPdfAsync(mail, "Dokument für Bestellung #"+ order.Id.ToString(), "",order.Document, "ExterneBestellung_" + order.Id + ".pdf");
+                _mailer.SendPdfAsync(mail, "Dokument für Bestellung #" + order.Id.ToString(), "", order.Document, "ExterneBestellung_" + order.Id + ".pdf");
 
                 if (_mailer.LastError != null)
                 {
@@ -72,6 +70,7 @@ namespace AWO_Orders.Pages.SendMail
             }
             return true;
         }
+
         public int PDFId { get; set; }
     }
 }

@@ -1,20 +1,13 @@
-﻿using System;
+﻿using AWO_Orders.Data;
+using AWO_Orders.Interface;
+using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
-using Microsoft.Data.SqlClient;
-using Wkhtmltopdf.NetCore;
-using System.IO;
-using AWO_Orders.Interface;
 using System.Text;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.OpenOrders
 {
@@ -56,7 +49,7 @@ namespace AWO_Orders.Pages.OpenOrders
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 V_OrdersModel = await models.Where(m => m.Number.ToLower().Contains(searchString.ToLower()) ||
-                    m.Description.ToLower().Contains(searchString.ToLower())||
+                    m.Description.ToLower().Contains(searchString.ToLower()) ||
                      m.Employee.ToLower().Contains(searchString.ToLower())).ToListAsync();
             }
             else
@@ -107,14 +100,13 @@ namespace AWO_Orders.Pages.OpenOrders
                 await SetPositionStatus(items, -1);
                 return RedirectToPage("/Info", new { subject = "Status wurde geändert!", nextPage = "/Index" });
             }
-     
         }
 
         private async Task SetPositionStatus(IList<V_OrdersModel> items, long externId)
         {
             var positions = new List<OrderPositionModel>();
             var changedOrders = new List<int>();
-            foreach(var item in items)
+            foreach (var item in items)
             {
                 if (item.Selected || item.Rejected)
                 {
@@ -136,17 +128,17 @@ namespace AWO_Orders.Pages.OpenOrders
                 }
             }
             await _orderPositionContext.SaveChangesAsync();
-            if(changedOrders.Any())
+            if (changedOrders.Any())
                 await RefreshOrderStatus(changedOrders, positions);
         }
 
         private async Task RefreshOrderStatus(IList<int> ids, List<OrderPositionModel> positions)
         {
             var orders = new List<OrderModel>();
-            foreach(var id in ids)
+            foreach (var id in ids)
             {
-                var order = (from o in _orderContext.Orders where o.Id == id select o).Include(e=>e.Empl).First();
-               
+                var order = (from o in _orderContext.Orders where o.Id == id select o).Include(e => e.Empl).First();
+
                 var Pos = from p in _orderPositionContext.OrderPositions where p.OrderId == id && p.Status == PositionStatusEnum.Open select p;
                 if (Pos.Any())
                 {
@@ -165,7 +157,7 @@ namespace AWO_Orders.Pages.OpenOrders
 
         private async Task SendInfoMail(IList<OrderModel> orders, List<OrderPositionModel> positions)
         {
-            foreach(var group in orders.GroupBy(g=>g.EmplId))
+            foreach (var group in orders.GroupBy(g => g.EmplId))
             {
                 var mail = group.First().Empl.EMail;
 
@@ -184,7 +176,7 @@ namespace AWO_Orders.Pages.OpenOrders
                     }
                     await _mailer.SendPdfAsync(mail, null, builder.ToString());
 
-                    if(_mailer.LastError != null)
+                    if (_mailer.LastError != null)
                     {
                         LastError = _mailer.LastError;
                     }
@@ -196,4 +188,3 @@ namespace AWO_Orders.Pages.OpenOrders
         public string FilterText { get => filterText; set => filterText = value; }
     }
 }
-

@@ -1,12 +1,10 @@
-﻿using System;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
 
 namespace AWO_Orders.Location
 {
@@ -19,7 +17,7 @@ namespace AWO_Orders.Location
             _context = context;
         }
 
-        public IList<LocationModel> LocationModel { get;set; }
+        public IList<LocationModel> LocationModel { get; set; }
 
         public async Task OnGetAsync(string searchString)
         {
@@ -34,7 +32,6 @@ namespace AWO_Orders.Location
 
             LocationModel = LocationModel.Select(a => { a.Employee = _context.Employees.SingleOrDefault(b => b.Id == a.ChangedBy); return a; }).ToList();
             LocationModel = LocationModel.OrderBy(a => a.Ident).ToList();
-
         }
 
         public string FilterText { get; set; }

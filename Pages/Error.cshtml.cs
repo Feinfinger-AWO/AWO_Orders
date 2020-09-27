@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using AWO_Orders.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Diagnostics;
 
 namespace AWO_Orders.Pages
 {
@@ -28,13 +24,13 @@ namespace AWO_Orders.Pages
         {
             LastException = ex;
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-            if(SessionLoginItem.Right == null && SessionLoginItem.EmployeeId == 0)
+            if (SessionLoginItem.Right == null && SessionLoginItem.EmployeeId == 0)
             {
                 return RedirectToPage("/Index");
             }
             return null;
         }
 
-        public Exception  LastException { get; set; }
+        public Exception LastException { get; set; }
     }
 }

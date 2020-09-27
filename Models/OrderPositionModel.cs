@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AWO_Orders.Models
 {
-    public class OrderPositionModel :BaseModel
+    public class OrderPositionModel : BaseModel
     {
         public int Id { get; set; }
 
@@ -24,10 +19,12 @@ namespace AWO_Orders.Models
 
         [DisplayName("Auftrag")]
         public int OrderId { get; set; }
+
         public virtual OrderModel Order { get; set; }
 
         [DisplayName("Typ")]
         public int ArticleTypeId { get; set; }
+
         public virtual ArticleTypeModel ArticleType { get; set; }
 
         [DisplayName("Nummer")]

@@ -1,14 +1,13 @@
-﻿using System;
+﻿using AWO_Orders.Data;
+using AWO_Orders.Interface;
+using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
-using AWO_Orders.Interface;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.OrderedOrders
 {
@@ -34,7 +33,7 @@ namespace AWO_Orders.Pages.OrderedOrders
             _mailer = mailer;
         }
 
-        public IList<V_OrdersModel> V_OrdersModel { get;set; }
+        public IList<V_OrdersModel> V_OrdersModel { get; set; }
 
         public async Task OnGetAsync(string searchString)
         {
@@ -72,7 +71,7 @@ namespace AWO_Orders.Pages.OrderedOrders
                     if (item.Selected || item.Rejected)
                     {
                         var position = (from s in _orderPositionContext.OrderPositions where s.Id == item.PosId select s).Single();
-                        
+
                         if (item.Selected)
                         {
                             position.Status = PositionStatusEnum.Delivered;
@@ -91,7 +90,7 @@ namespace AWO_Orders.Pages.OrderedOrders
                 }
 
                 await _orderPositionContext.SaveChangesAsync();
-                
+
                 if (changedOrders.Any())
                     await RefreshOrderStatus(changedOrders, positions);
 
@@ -101,7 +100,6 @@ namespace AWO_Orders.Pages.OrderedOrders
             return RedirectToPage("/Info", new { subject = "Keine Auswahl vorhanden!", nextPage = "/Index" });
         }
 
-
         private async Task RefreshOrderStatus(IList<int> ids, List<OrderPositionModel> positions)
         {
             var orders = new List<OrderModel>();
@@ -109,7 +107,7 @@ namespace AWO_Orders.Pages.OrderedOrders
             {
                 var order = (from o in _orderContext.Orders where o.Id == id select o).Include(e => e.Empl).Include(e => e.Status).First();
                 var Pos = from p in _orderPositionContext.OrderPositions where p.OrderId == id && (p.Status == PositionStatusEnum.Open || p.Status == PositionStatusEnum.Ordered) select p;
-                
+
                 if (!Pos.Any())
                 {
                     order.StatusId = (from s in _orderContext.OrderStatus where s.BaseStatus == OrderBaseStatusEnum.Delivered select s).First().Id;

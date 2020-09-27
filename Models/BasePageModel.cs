@@ -1,17 +1,15 @@
 ﻿using AWO_Orders.Data;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AWO_Orders.Models
 {
-    public class BasePageModel:PageModel
+    public class BasePageModel : PageModel
     {
         private LoginItem loginItem;
 
@@ -63,12 +61,12 @@ namespace AWO_Orders.Models
         /// <param name="order"></param>
         /// <param name="typ"></param>
         /// <param name="positionId"></param>
-        public async Task WriteLog(int orderId, LogChangeTypesEnum typ,int? positionId)
+        public async Task WriteLog(int orderId, LogChangeTypesEnum typ, int? positionId)
         {
             var options = new DbContextOptionsBuilder<OrderLogEntriesContext>();
             options.UseSqlServer(SessionLoginItem.ConnectionString);
             var logContext = new OrderLogEntriesContext(options.Options);
-            await logContext.WriteLog(orderId, typ, SessionLoginItem.EmployeeId,positionId);
+            await logContext.WriteLog(orderId, typ, SessionLoginItem.EmployeeId, positionId);
         }
 
         public LoginItem SessionLoginItem

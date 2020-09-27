@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+﻿using AWO_Orders.Components;
 using AWO_Orders.Data;
 using AWO_Orders.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using AWO_Orders.Components;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.Orders
 {
@@ -26,26 +24,23 @@ namespace AWO_Orders.Pages.Orders
             _orderStatusContext = orderStatusContext;
         }
 
-        public async Task OnGetAsync(string searchString, int? filterStatusId, int? id,int? pageIndex,string ordersearch)
+        public async Task OnGetAsync(string searchString, int? filterStatusId, int? id, int? pageIndex, string ordersearch)
         {
             var loginItem = GetLogin();
             IQueryable<OrderModel> orders = null;
 
             if (!string.IsNullOrWhiteSpace(ordersearch))
             {
-
                 orders = (loginItem.Right.CanProcess) ?
                         from s in _context.Orders where s.Number.ToLower().Contains(ordersearch.ToLower()) select s :
-                          from s in _context.Orders where s.Number.ToLower().Contains(ordersearch.ToLower())  && s.EmplId == loginItem.EmployeeId select s;
+                          from s in _context.Orders where s.Number.ToLower().Contains(ordersearch.ToLower()) && s.EmplId == loginItem.EmployeeId select s;
                 OrderModel = await orders
                     .Include(o => o.Employee)
                     .Include(o => o.Status).ToListAsync();
-                        OrderModel = OrderModel.OrderBy(a => a.PlaceDate).ToList();
-
+                OrderModel = OrderModel.OrderBy(a => a.PlaceDate).ToList();
             }
             else
             {
-
                 FilterStatusId = filterStatusId ?? 1;
                 FilterText = searchString;
 
@@ -56,7 +51,6 @@ namespace AWO_Orders.Pages.Orders
 
                 if (!String.IsNullOrWhiteSpace(FilterText))
                 {
-
                     orders = (loginItem.Right.CanProcess) ?
                             from s in _context.Orders
                             where s.StatusId == FilterStatusId &&
@@ -96,7 +90,7 @@ namespace AWO_Orders.Pages.Orders
                 }
             }
 
-            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s=>s.SortNumber), "Id", "Ident");
+            ViewData["StatusId"] = new SelectList(_context.Set<OrderStatusModel>().OrderBy(s => s.SortNumber), "Id", "Ident");
         }
 
         private async Task SetReady(int orderId)
@@ -111,22 +105,23 @@ namespace AWO_Orders.Pages.Orders
         public IList<OrderModel> OrderModel { get; set; }
         public int FilterStatusId { get => filterStatusId; set => filterStatusId = value; }
         public PaginatedList<OrderModel> POrderModel { get; set; }
-        public bool PagingEnabled 
-        { 
+
+        public bool PagingEnabled
+        {
             get
             {
                 var status = (from s in _context.OrderStatus where s.Id == FilterStatusId select s).FirstOrDefault();
 
                 if (status == null)
                     return false;
-                
+
                 pagingEnabled = status.BaseStatus == OrderBaseStatusEnum.Canceled || status.BaseStatus == OrderBaseStatusEnum.Delivered;
                 return pagingEnabled;
             }
-            set 
-            { 
-                pagingEnabled = value; 
-            } 
+            set
+            {
+                pagingEnabled = value;
+            }
         }
     }
 }

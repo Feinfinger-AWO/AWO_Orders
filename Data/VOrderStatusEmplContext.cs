@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Models;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Models;
-using Newtonsoft.Json;
 
 namespace AWO_Orders.Data
 {

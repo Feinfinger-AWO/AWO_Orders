@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AWO_Orders.Pages.OrderPositions
 {

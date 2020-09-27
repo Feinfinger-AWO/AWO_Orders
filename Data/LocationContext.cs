@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Models;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Models;
 
 namespace AWO_Orders.Data
 {
@@ -11,7 +7,7 @@ namespace AWO_Orders.Data
     {
         private DbSet<AWO_Orders.Models.LocationModel> locations;
 
-        public LocationContext (DbContextOptions<LocationContext> options)
+        public LocationContext(DbContextOptions<LocationContext> options)
             : base(options)
         {
         }
@@ -22,17 +18,17 @@ namespace AWO_Orders.Data
                 .HasOne(p => p.Employee)
                 .WithMany()
                 .HasForeignKey(p => p.ChangedBy);
-            
+
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<AWO_Orders.Models.LocationModel> Locations 
-        { 
-            get 
+        public DbSet<AWO_Orders.Models.LocationModel> Locations
+        {
+            get
             {
                 return locations;
             }
-            set 
+            set
             {
                 locations = value;
             }

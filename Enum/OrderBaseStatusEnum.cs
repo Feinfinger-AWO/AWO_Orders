@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AWO_Orders
+﻿namespace AWO_Orders
 {
     public enum OrderBaseStatusEnum
     {
@@ -12,6 +7,6 @@ namespace AWO_Orders
         Okay = 2,
         Ordered = 3,
         Delivered = 4,
-        Canceled =5
+        Canceled = 5
     }
 }

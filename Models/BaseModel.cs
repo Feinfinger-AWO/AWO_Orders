@@ -1,12 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Reflection;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace AWO_Orders.Models
 {
@@ -22,6 +16,7 @@ namespace AWO_Orders.Models
         [Newtonsoft.Json.JsonIgnore]
         [DisplayName("Von")]
         public int ChangedBy { get; set; }
+
         [ForeignKey("ChangedBy")]
         [Newtonsoft.Json.JsonIgnore]
         public virtual EmployeeModel Employee { get; set; }

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.ExternalOrders
 {
@@ -38,8 +35,8 @@ namespace AWO_Orders.Pages.ExternalOrders
             {
                 return NotFound();
             }
-           ViewData["ChangedBy"] = new SelectList(_context.Set<EmployeeModel>(), "Id", "EMail");
-           ViewData["ManagerId"] = new SelectList(_context.Set<EmployeeModel>(), "Id", "EMail");
+            ViewData["ChangedBy"] = new SelectList(_context.Set<EmployeeModel>(), "Id", "EMail");
+            ViewData["ManagerId"] = new SelectList(_context.Set<EmployeeModel>(), "Id", "EMail");
             return Page();
         }
 

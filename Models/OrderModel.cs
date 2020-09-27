@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AWO_Orders.Models
 {
@@ -13,17 +10,22 @@ namespace AWO_Orders.Models
     public class OrderModel : BaseModel
     {
         public int Id { get; set; }
+
         [Required]
         [DisplayName("Nummer")]
         public string Number { get; set; }
+
         [DisplayName("Erstellt")]
         public DateTime PlaceDate { get; set; }
+
         [DisplayName("Status")]
         public int StatusId { get; set; }
+
         public virtual OrderStatusModel Status { get; set; }
 
         [DisplayName("Mitarbeiter")]
         public int EmplId { get; set; }
+
         public virtual EmployeeModel Empl { get; set; }
 
         [DisplayName("Bemerkung")]

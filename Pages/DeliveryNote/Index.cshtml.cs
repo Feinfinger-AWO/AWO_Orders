@@ -1,12 +1,8 @@
-﻿using System;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.DeliveryNote
 {
@@ -19,7 +15,7 @@ namespace AWO_Orders.Pages.DeliveryNote
             _context = context;
         }
 
-        public IList<V_OrdersModel> V_OrdersModel { get;set; }
+        public IList<V_OrdersModel> V_OrdersModel { get; set; }
 
         public async Task OnGetAsync(IEnumerable<int> idList)
         {

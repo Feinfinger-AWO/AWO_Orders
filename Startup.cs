@@ -1,28 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Data;
+using AWO_Orders.Interface;
+using AWO_Orders.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Connections;
-using System.Data.Common;
-using Microsoft.Data.SqlClient;
-using System.Globalization;
-using System.Threading;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Wkhtmltopdf.NetCore;
 using Rotativa.AspNetCore;
-using AWO_Orders.Models;
-using AWO_Orders.Interface;
+using System;
+using System.Globalization;
 
 namespace AWO_Orders
 {
@@ -50,12 +41,12 @@ namespace AWO_Orders
 
             services.AddHttpContextAccessor();
 
-            services.AddSession(options => {
+            services.AddSession(options =>
+            {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -83,7 +74,7 @@ namespace AWO_Orders
                     options.UseSqlServer(builder.ConnectionString));
 
             Startup.ConnectionString = builder.ConnectionString;
-           
+
             services.AddDbContext<OrderStatusContext>(options =>
                     options.UseSqlServer(builder.ConnectionString));
 
@@ -147,7 +138,7 @@ namespace AWO_Orders
             app.UseRequestLocalization(localizationOptions);
 
             app.UseAuthorization();
-            
+
             app.UseSession();
 
             app.UseEndpoints(endpoints =>
@@ -156,11 +147,8 @@ namespace AWO_Orders
             });
 
             RotativaConfiguration.Setup((Microsoft.AspNetCore.Hosting.IHostingEnvironment)env);
-          
         }
 
         public static string ConnectionString { get; set; }
     }
-
-   
 }

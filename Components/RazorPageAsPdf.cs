@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -26,6 +25,7 @@ namespace AWO_Orders.Components
         private readonly IRazorPageActivator _activator;
         private string _razorPageName { get; set; }
         public PageModel PageModel { get; set; }
+
         public RazorPageAsPdf(PageModel pageModel)
         {
             PageModel = pageModel;
@@ -74,6 +74,7 @@ namespace AWO_Orders.Components
             byte[] fileContent = WkhtmltopdfDriver.ConvertHtml(this.WkhtmlPath, this.GetConvertOptions(), htmlForWkhtml);
             return fileContent;
         }
+
         protected override string GetUrl(ActionContext context) => string.Empty;
     }
 }

@@ -5,9 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AWO_Orders.Models
@@ -26,8 +24,7 @@ namespace AWO_Orders.Models
             defaultSubject = smtpSettings.Value.Subject;
         }
 
-
-        public async Task SendPdfAsync(string email, string subject, string body,byte[]pdf,string pdfName)
+        public async Task SendPdfAsync(string email, string subject, string body, byte[] pdf, string pdfName)
         {
             var multipart = new Multipart("mixed");
             multipart.Add(new TextPart("html") { Text = body });
@@ -45,19 +42,19 @@ namespace AWO_Orders.Models
             await SendPdfAsync(email, subject, null, multipart);
         }
 
-        public async Task SendPdfAsync(string email, string subject, string body,Multipart multiBody = null)
+        public async Task SendPdfAsync(string email, string subject, string body, Multipart multiBody = null)
         {
             LastError = null;
             try
             {
-                var message = new MimeMessage();  
+                var message = new MimeMessage();
                 message.From.Add(new MailboxAddress(_smtpSettings.SenderName, _smtpSettings.SenderEmail));
 
                 foreach (var mail in email.Trim(';').Split(new char[] { ';' }))
                 {
                     message.To.Add(new MailboxAddress(mail));
                 }
-                
+
                 message.Subject = subject ?? defaultSubject;
 
                 if (multiBody == null)
@@ -89,7 +86,8 @@ namespace AWO_Orders.Models
                     await client.SendAsync(message);
                     await client.DisconnectAsync(true);
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 LastError = e;
             }

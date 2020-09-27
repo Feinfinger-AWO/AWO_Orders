@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AWO_Orders.Components;
+using AWO_Orders.Data;
+using AWO_Orders.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
-using Microsoft.VisualBasic;
+using System.Collections.Generic;
 using System.IO;
-using AWO_Orders.Components;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AWO_Orders.Pages.ExternalOrders
 {
@@ -19,8 +17,6 @@ namespace AWO_Orders.Pages.ExternalOrders
         private readonly AWO_Orders.Data.ExternalOrdersContext _context;
         private readonly AWO_Orders.Data.OrdersContext _contextOrders;
         private readonly AWO_Orders.Data.OrderPositionContext _contextPositions;
-
-
 
         public DetailsModel(AWO_Orders.Data.ExternalOrdersContext context,
             OrdersContext contextOrders,
@@ -72,9 +68,9 @@ namespace AWO_Orders.Pages.ExternalOrders
         {
             if (idMail.HasValue)
             {
-                if(_context.ExternalOrders.First(e=>e.Id == idMail).Document == null) 
+                if (_context.ExternalOrders.First(e => e.Id == idMail).Document == null)
                 {
-                    return RedirectToPage("/Info", new { subject = "Es ist kein Dokument vorhanden!", nextPage = "/ExternalOrders/Details", paramId =  idMail  });
+                    return RedirectToPage("/Info", new { subject = "Es ist kein Dokument vorhanden!", nextPage = "/ExternalOrders/Details", paramId = idMail });
                 }
                 return RedirectToPage("/SendMail/SelectMailPDF", new { id = idMail.Value });
             }
@@ -104,9 +100,9 @@ namespace AWO_Orders.Pages.ExternalOrders
             ExternalOrderModel.Document = build.Result;
 
             _context.SaveChanges();
-           
+
             var stream = new MemoryStream(ExternalOrderModel.Document);
-            return File(stream, "application/pdf", "ExterneBestellung_"+ ExternalOrderModel.Id + ".pdf");
+            return File(stream, "application/pdf", "ExterneBestellung_" + ExternalOrderModel.Id + ".pdf");
         }
 
         public ExternalOrderModel ExternalOrderModel { get; set; }

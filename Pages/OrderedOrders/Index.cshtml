@@ -7,7 +7,6 @@
 
 <h1>Wareneingang</h1>
 
-
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>Suche [Bestellung/Mitarbeiter/Beschreibung]</p>
@@ -83,7 +82,6 @@
                         </td>
                         <td>
                             <input type="checkbox" id="[@count].Rejected" onchange=" document.getElementById('[@count].Selected').checked = false" name="[@count].Rejected" asp-for="@group.ElementAt(n).Rejected" />
-
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => group.ElementAt(n).PlaceDate)

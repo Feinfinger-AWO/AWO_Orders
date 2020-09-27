@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace AWO_Orders.Data
 {
     public class OpenOrdersContext : DbContext
     {
-        public OpenOrdersContext (DbContextOptions<OpenOrdersContext> options)
+        public OpenOrdersContext(DbContextOptions<OpenOrdersContext> options)
             : base(options)
         {
         }

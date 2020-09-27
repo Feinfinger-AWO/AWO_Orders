@@ -1,18 +1,12 @@
-﻿using System;
+﻿using AWO_Orders.Data;
+using AWO_Orders.Models;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using AWO_Orders.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.IO;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using AWO_Orders.Models;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace AWO_Orders.Pages
 {
@@ -22,17 +16,16 @@ namespace AWO_Orders.Pages
         private readonly VOrderStatusContext _vcontext;
         private readonly OrdersContext _ordersContext;
 
-        public IndexModel(ILogger<IndexModel> logger,VOrderStatusContext vcontext, OrdersContext ordersContext)
+        public IndexModel(ILogger<IndexModel> logger, VOrderStatusContext vcontext, OrdersContext ordersContext)
         {
             _ordersContext = ordersContext;
             _vcontext = vcontext;
             InitialValue = vcontext;
-             _logger = logger;
+            _logger = logger;
         }
 
         public IActionResult OnGet(int? exit)
         {
-
             if (exit.HasValue && exit.Value == 1)
             {
                 Logout();
@@ -53,7 +46,7 @@ namespace AWO_Orders.Pages
                 }
                 else
                 {
-                    names = _ordersContext.Orders.Where(p => p.EmplId == SessionLoginItem.EmployeeId &&  p.Number.Contains(term)).Select(p => p.Number).ToList();
+                    names = _ordersContext.Orders.Where(p => p.EmplId == SessionLoginItem.EmployeeId && p.Number.Contains(term)).Select(p => p.Number).ToList();
                 }
 
                 return new JsonResult(names.ToArray());
@@ -67,11 +60,11 @@ namespace AWO_Orders.Pages
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="Password"></param>
-        public IActionResult OnPost(string Name,string Password, string ordersearch,string directSearch)
+        public IActionResult OnPost(string Name, string Password, string ordersearch, string directSearch)
         {
-            if (!string.IsNullOrWhiteSpace(ordersearch)|| !string.IsNullOrWhiteSpace(directSearch))
+            if (!string.IsNullOrWhiteSpace(ordersearch) || !string.IsNullOrWhiteSpace(directSearch))
             {
-                return RedirectToPage("/Orders/Index", new { ordersearch = string.IsNullOrWhiteSpace(directSearch)?ordersearch: directSearch });
+                return RedirectToPage("/Orders/Index", new { ordersearch = string.IsNullOrWhiteSpace(directSearch) ? ordersearch : directSearch });
             }
 
             try
@@ -117,16 +110,16 @@ namespace AWO_Orders.Pages
                         }
                     }
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
-                return RedirectToPage("/Error",new {ex = e });
+                return RedirectToPage("/Error", new { ex = e });
             }
             return null;
         }
 
         private void InitLogin()
         {
-
         }
 
         public string Name { get; set; }

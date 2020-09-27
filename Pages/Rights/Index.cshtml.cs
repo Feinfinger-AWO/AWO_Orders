@@ -1,12 +1,9 @@
-﻿using System;
+﻿using AWO_Orders.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using AWO_Orders.Data;
-using AWO_Orders.Models;
 
 namespace AWO_Orders.Pages.Rights
 {
@@ -19,13 +16,12 @@ namespace AWO_Orders.Pages.Rights
             _context = context;
         }
 
-        public IList<RightModel> RightModel { get;set; }
+        public IList<RightModel> RightModel { get; set; }
 
         public async Task OnGetAsync()
         {
             RightModel = await _context.Rights.Include(o => o.Employee).ToListAsync();
             RightModel = RightModel.OrderBy(a => a.Ident).ToList();
         }
-
     }
 }
